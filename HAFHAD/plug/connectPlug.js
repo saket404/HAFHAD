@@ -179,7 +179,6 @@ module.exports = {
                         device.setPowerState( false );
                         device.setAlias( myALIAS ).then( function() {
                           console.log( 'Current Plug name: ' + device.alias );
-                          //device.getSysInfo().then( console.log );
                           firebaseController.writeDeviceData( 1, device.alias, plugMAC, plugIP, device.relayState, plugINFO );  
                           callback(true);
                         });

@@ -53,7 +53,7 @@ function setStatePlug ( state, deviceIP, database, callback ) {
 // ################################################################# //
 
 process.argv.forEach(function(index) {
-	//index = 'open,ห้องนอน,ห้องครัว';
+	index = 'open,ห้องนอน,ห้องครัว';
 	var words = index.split(',');
 
 	if ( words.length > 1 ){
@@ -81,9 +81,9 @@ process.argv.forEach(function(index) {
 
 });
 
-var status1 = 0;
-var status2 = 0;
 var returnToPython = '';
+var temp1 = false;
+var temp2 = false;
 
 if( device1 != '' ) {
 
@@ -91,19 +91,21 @@ if( device1 != '' ) {
 
 		if( deviceJson.status ) {
 			setStatePlug ( command, deviceJson.ip, database , function( status ) {
-				if(status)
+				if( status ){
 					returnToPython += device1 + 'สำเร็จ, ';
+					temp1 = true;
+				}
 				else{
 					returnToPython += 'ไอพีของdevice'+device1+'ผิดพลาด, ';
+					temp1 = true;
 				}
-					
 			});
 		}
 		else {
 			returnToPython += 'ไม่มีdeviceชื่อ'+ device1 + ', ';
+			temp1 = true;
 		}
 	} )
-	
 }
 
 if( device2 != '' ) {
@@ -111,19 +113,25 @@ if( device2 != '' ) {
 	firebaseController.readDeviceDataFromAlias( userID, device2, function( deviceJson, database ) {
 
 		if( deviceJson.status )
-			setStatePlug ( command, deviceJson.ip, database, function( res ) {
-				if(status)
-					returnToPython += device2 + 'สำเร็จ';
+			setStatePlug ( command, deviceJson.ip, database, function( status ) {
+				if(status){
+					returnToPython += device2 + 'สำเร็จ, ';
+					temp1 = true;
+				}
 				else{
 					returnToPython += 'ไอพีของdevice'+device2+'ผิดพลาด, ';
+					temp1 = true;
 				}
 			} );
 		else {
 			returnToPython += 'ไม่มีdeviceชื่อ'+ device2;
+			temp1 = true;
 		}
 			
 	});
-	
 }
 
-console.log(returnToPython)
+// while( temp1!=true && temp2!=true ){
+
+// }
+// console.log(returnToPython);
