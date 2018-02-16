@@ -94,8 +94,8 @@ def checkemail():
 
         senders = [getSender(e) for e in msgs]
     except imaplib.IMAP4.error:
-        print(
-            "I'm sorry. I'm not authenticated to work with your Gmail.")
+        tts(
+            "Gmail คุณไม่รับรองเราค่ะ")
         return
 
     if not senders:

@@ -81,6 +81,7 @@ def playSong(song):
                 text = stt()
             except Exception as e:
                 tts("ไม่เข้าใจที่พูดออกมาค่ะ")
+                continue
             
             
             

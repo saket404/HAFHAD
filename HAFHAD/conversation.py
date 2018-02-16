@@ -30,7 +30,7 @@ def conversation():
         checkemail()
         count = 1
 		
-    if any(['บอกการแจ้งเตือนปฏิทิน' in text,'ดูปฏิทิน' in text, 'แจ้งเตือนอะไร' in text,'เช็คปฏิทิน' in text, 'เช็คแจ้งเตือน' in text,"ดูการแจ้งเตือน" in text,"มีการแจ้งเตือน" in text]):
+    if any(['บอกการแจ้งเตือนปฏิทิน' in text,'ดูปฏิทิน' in text, 'แจ้งเตือนอะไร' in text,'เช็คปฏิทิน' in text, 'เช็คการแจ้งเตือน' in text,"ดูการแจ้งเตือน" in text,"มีการแจ้งเตือน" in text, 'เช็คแจ้งเตือน' in text]):
         count = checkcalendar(text)
         
         
