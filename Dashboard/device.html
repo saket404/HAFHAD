@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Chart</title>
+	
+	<script defer src="js/fontawesome-all.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+  
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+
+	    <!-- Nav bar -->
+    <nav class="navbar navbar-light bg-light">
+            <span class="navbar-brand mb-0 h1"><font size= "5" face="verdana">HAFHAD</font></span>
+            
+                    <a class="nav-link disabled" href="#"><p> <span id="datetime"></span></p></a>
+                  
+          </nav>
+<!--	Button css -->
+	
+	
+<style>
+    .fontWhiteColor {
+        color:beige;
+    }
+    .backbutton {
+        position:absolute;
+        transition: .5s ease;
+        top: 50%;
+        left: 70%;
+    }
+    .btn-squared-default
+    {
+        width: 200px !important;
+        height: 200px !important;
+        font-size: 10px;
+    }
+
+    .btn-squared-default:hover
+        {
+            border: 3px solid white;
+            font-weight: 800;
+        }
+
+    .btn-squared-default-plain
+    {
+        width: 100px !important;
+        height: 100px !important;
+        font-size: 10px;
+    }
+
+    .btn-squared-default-plain:hover
+        {
+            border: 0px solid white;
+        }
+    body {
+        background-color: #363636;
+    }	
+    .nav_color {
+        color: #494949;
+    }
+    nav {
+        border-top: 10px solid black;    /* in place of the word "black", 
+                                       you can use #000000 or rgb(0,0,0) */
+        border-bottom: 1px solid black;
+    } 
+    .mid {
+        margin: 25px 50px 75px 100px;
+    }
+	.divider{
+        width:5px;
+        height:auto;
+        display:inline-block;
+    }
+		
+	.padding-0{
+        padding-right:5;
+        padding-left:5;
+    }
+    </style>
+    <script>
+
+    var config = {
+        apiKey: "AIzaSyBIzv-xxZNIlPv73EK8vy5PnyeTWXlSa70",
+        authDomain: "plugdatabase.firebaseapp.com",
+        databaseURL: "https://plugdatabase.firebaseio.com",
+        projectId: "plugdatabase",
+        storageBucket: "plugdatabase.appspot.com",
+    };
+    firebase.initializeApp(config);
+
+    function callData( callback ) {
+
+        var userID = 1;
+        var query = firebase.database().ref('/user-plugs/' + userID + '/').orderByKey();
+        var plug = new Array();
+
+        query.once("value").then(function(snapshot) {
+        var count = 1;
+        var data = [];
+        var state;
+        snapshot.forEach(function(childSnapshot) {
+            var childData = childSnapshot.val();
+            if(childData.state == true)
+                state = '<b>ON</b>';
+            else
+                state = '<b>OFF</b>'
+
+            var temp = [count, childData.alias, state, '<img src="element/plug.png"></img>'];
+            var key = childSnapshot.key;
+
+            plug.push(key);
+            data.push(temp);
+           
+            count++;
+        });
+        callback(plug, data);
+    });
+    }
+    
+    callData( function( plugMacArray, dataArray ){
+        $('#table').DataTable( {
+            data: dataArray,
+            paging:   false,
+            ordering: false,
+            info:     false,
+            searching: false,
+        } );
+    } );
+
+    </script>
+
+</head>
+<body bgcolor="#E6E6FA" >
+    <a href="index.html" class="backbutton"><i class="fa fa-backward" aria-hidden="true"></i></a>
+    <div class = "mid">
+        <table id="table" class="display" cellspacing="0" width="70%">
+            <thead>
+                <tr>
+                    <th class="fontWhiteColor">#</th>
+                    <th class="fontWhiteColor">Name</th>
+                    <th class="fontWhiteColor">State</th>
+                    <th class="fontWhiteColor"></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+	<script>
+        var d = new Date();
+        document.getElementById("datetime").innerHTML = d;
+    </script>
+	
+</body>
+</html>
