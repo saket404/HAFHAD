@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Chart</title>
+
+    <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+    <script src="js/Chart.js"></script>
+    <script src="js/Chart.min.js"></script>
+    <script src="js/Chart.bundle.min.js"></script>
+	
+	<script defer src="js/fontawesome-all.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+	
+	    <!-- Nav bar -->
+    <nav class="navbar navbar-light bg-light">
+            <span class="navbar-brand mb-0 h1"><font size= "5" face="verdana">HAFHAD</font></span>
+            
+                    <a class="nav-link disabled" href="#"><p> <span id="datetime"></span></p></a>
+                  
+          </nav>
+<!--	Button css -->
+	
+	
+<style>
+    .backbutton {
+    position:absolute;
+    transition: .5s ease;
+    top: 50%;
+    left: 70%;
+}
+        .btn-squared-default
+        {
+            width: 200px !important;
+            height: 200px !important;
+            font-size: 10px;
+        }
+    
+            .btn-squared-default:hover
+            {
+                border: 3px solid white;
+                font-weight: 800;
+            }
+    
+        .btn-squared-default-plain
+        {
+            width: 100px !important;
+            height: 100px !important;
+            font-size: 10px;
+        }
+    
+            .btn-squared-default-plain:hover
+            {
+                border: 0px solid white;
+            }
+        body {
+  background-color: #363636;
+              }	
+		.nav_color {
+			color: #494949;
+		}
+		nav {
+    border-top: 10px solid black;    /* in place of the word "black", 
+                                       you can use #000000 or rgb(0,0,0) */
+    border-bottom: 1px solid black;
+    
+} 
+    .mid {
+        margin: 25px 50px 75px 100px;
+    }
+		.divider{
+    width:5px;
+    height:auto;
+    display:inline-block;
+}
+		
+		.padding-0{
+    padding-right:5;
+    padding-left:5;
+}
+    </style>
+
+	
+
+
+    <script>
+
+        
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyD93A8ZM2XkxC6Osul_1iZAsobeHrnkqaE",
+    authDomain: "dashboard-2f5e4.firebaseapp.com",
+    databaseURL: "https://dashboard-2f5e4.firebaseio.com",
+    projectId: "dashboard-2f5e4",
+    storageBucket: "dashboard-2f5e4.appspot.com",
+    messagingSenderId: "228391119009"
+  };
+  firebase.initializeApp(config);
+    
+
+var query = firebase.database().ref("/").orderByKey();
+var label = new Array();
+var data_chart = [];
+var dummy = ["day1","day2","day3"]
+query.once("value")
+  .then(function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      // key will be "ada" the first time and "alan" the second time
+      var key = childSnapshot.key;
+      label.push(key) 
+      // childData will be the actual contents of the child
+      var childData = childSnapshot.val();
+      data_chart.push(childData.Use)
+      
+      
+  });
+  console.log(data_chart);
+  var ctx = document.getElementById("chart").getContext('2d');
+
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: label,
+        datasets: [{
+            label: 'Energy Consumtion',
+            data: data_chart,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+
+      title: {
+            display: true,
+            text: 'Energy Consumtion',
+            fontSize: 30
+            
+        },
+
+      legend: {
+            display: false
+         },
+         tooltips: {
+            enabled: false
+         },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+});
+// console.log(label)
+
+// data_chart = Object.keys(data_chart).map(function (key) { return obj[key]; });
+// console.log(data_chart);
+// console.log(dummy);
+
+
+    </script>
+
+</head>
+<body bgcolor="#E6E6FA" >
+    <a href="index.html" class="backbutton"><i class="fa fa-backward" aria-hidden="true"></i></a>
+    <div class = "mid">
+        <div class="chart-container" style="position: relative; height:20vh; width:40vw">
+                <canvas id="chart"></canvas>
+            </div>
+    </div>
+	    <script>
+            var d = new Date();
+            document.getElementById("datetime").innerHTML = d;
+            </script>
+	
+</body>
+</html>

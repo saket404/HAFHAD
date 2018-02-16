@@ -1,0 +1,16 @@
+{
+  "name": "plug",
+  "version": "1.0.0",
+  "description": "",
+  "main": "plug.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^4.9.0",
+    "local-network-scanner": "^0.1.1",
+    "tplink-smarthome-api": "^0.22.0"
+  }
+}
