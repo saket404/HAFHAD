@@ -241,8 +241,8 @@ http = credentials.authorize(http)
 #   authorized httplib2.Http() object that can be used for API calls
 service = build('calendar', 'v3', http=http)
 
-def checkcalendar(text):
-    e=word_tokenize(text,engine='newmm') 
+def checkcalendar(token,text):
+    e=token 
     if("วันนี้" in text and e[0] != "วันนี้"):
         getEventsToday()
     elif("พรุ่งนี้" in text and "พรุ่งนี้" not in e[0]):

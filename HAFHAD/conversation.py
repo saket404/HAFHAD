@@ -4,34 +4,46 @@ from modules.checkcalendar import checkcalendar
 from stt import stt
 from tts import tts
 from modules.song import song
+from classify import classify
+from pythainlp.tokenize import word_tokenize as tokenize
 
 def conversation():
     
     tts("ว่าไงคะ")
     text = ""
     count = 0
+    flag = 0
+    
+    
+    
+    
     try:
         text = stt()
     except Exception as e:
         tts("อินเทอร์เน็ตมีปัญหาค่ะ")
         count = 2
     
-    
-    
-    
     if any(['ปิดไฟ' in text, 'ปิดปลั๊ก' in text, 'เปิดไฟ' in text, 'เปิดปลั๊ก' in text]):
         count = open_close(text)
+        if count == 0:
+            flag = 1
+        
+        
+    if count == 0 and flag == 0:
+        token = tokenize(text,engine = 'newmm')
+        result = classify(token)
+        print(result)
+    
+        if str(result[0]) == "playsong":
+            count = song(token)
+            count = 1        
 
-    if any(['เปิดเพลง' in text, 'เล่นเพลง' in text]):
-        count = song(text)
-        count = 1        
-
-    if any(['เช็คเมล์' in text,'เช็คอีเมล' in text,'เช็ค inbox' in text,'ตรวจอีเมล' in text, 'ตรวจเมล์' in text]):
-        checkemail()
-        count = 1
+        if str(result[0]) == "email":
+            checkemail()
+            count = 1
 		
-    if any(['บอกการแจ้งเตือนปฏิทิน' in text,'ดูปฏิทิน' in text, 'แจ้งเตือนอะไร' in text,'เช็คปฏิทิน' in text, 'เช็คการแจ้งเตือน' in text,"ดูการแจ้งเตือน" in text,"มีการแจ้งเตือน" in text, 'เช็คแจ้งเตือน' in text]):
-        count = checkcalendar(text)
+        if str(result[0]) == "checkcalendar":
+            count = checkcalendar(token,text)
         
         
 

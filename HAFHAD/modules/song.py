@@ -115,8 +115,8 @@ def playSong(song):
     
     
     
-def song(text):   
-    e=word_tokenize(text,engine='newmm')
+def song(token):   
+    e=token
     if(e[0] == 'เล่น' or e[0] == 'เปิด'):
         if(e[1] == 'เพลง' and e[1] != e[-1]):
             print(e)
