@@ -60,7 +60,9 @@ def play_audio_file(fname=DETECT_DING):
 
 def play_function(fname=DETECT_DING):
 	""" Simple callback function to run call other function after detect Hotword """
-	conversation()
+	flag = 0
+	text = ""
+	conversation(flag,text)
 	print("Waiting for next HOTWORD")
 	
 	
@@ -163,7 +165,7 @@ class HotwordDetector(object):
             "callbacks (%d)" % (self.num_hotwords, len(detected_callback))
 
         logger.debug("detecting...")
-
+        flag = 0
         while self._running is True:
             if interrupt_check():
                 logger.debug("detect voice break")
@@ -171,12 +173,17 @@ class HotwordDetector(object):
             data = self.ring_buffer.get()
             if len(data) == 0:
                 time.sleep(sleep_time)
-                continue
+                if flag == 1:
+                    break
+                else:
+                    continue
+                
 
             ans = self.detector.RunDetection(data)
             if ans == -1:
                 logger.warning("Error initializing streams or reading audio data")
             elif ans > 0:
+                flag = 1
                 message = "Keyword " + str(ans) + " detected at time: "
                 message += time.strftime("%Y-%m-%d %H:%M:%S",
                                          time.localtime(time.time()))

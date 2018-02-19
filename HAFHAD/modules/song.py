@@ -9,8 +9,7 @@ from pythainlp.tokenize import word_tokenize
 from tts import tts
 from stt import stt
 from modules.word import wake_word
-
-
+from modules.conversation_song import conversation_song
 
 inte = False
 
@@ -67,6 +66,7 @@ def getSong(link):
 def playSong(song):
     try:
         p = vlc.MediaPlayer("song/"+song)
+        tts("เข้าสู่โหมดเพลงนะค่ะ")
         p.play()
     
         
@@ -87,11 +87,11 @@ def playSong(song):
             
             print("You said: "+text+"\n")
             
-            if("ปิด" in text):
+            if("ปิดเพลง" in text):
                 tts("เรียบร้อยค่ะ")
                 p.stop()
                 break
-            elif("หยุด" in text or "Pause" in text or "พอส" in text):
+            elif("หยุดเพลง" in text or "Pause" in text or "พอส" in text):
                 tts("หยุดเพลงนะค่ะ")
                 p.pause()
                 continue
@@ -100,8 +100,14 @@ def playSong(song):
                 p.play()
                 continue
             else:
-                tts("ไม่ได้ยินค่ะ")
-            
+                flag = 2
+                p.pause()
+                try:
+                    conversation_song(flag,text)
+                except Exception as e:
+                    tts("ไม่เข้าใจคำสั่งของคุณค่ะ")
+                    
+                p.play()
             
         
         
