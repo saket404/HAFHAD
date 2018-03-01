@@ -2,8 +2,10 @@ import httplib2
 import sys
 import datetime
 import re
-
-
+from tts import tts
+from stt import stt
+import dateparser
+import pytz
 
 from dateutil import tz
 from apiclient.discovery import build
@@ -11,6 +13,7 @@ from oauth2client.file import Storage
 from oauth2client.client import AccessTokenRefreshError
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.tools import *
+from pythainlp.tokenize import word_tokenize
 
 
 
@@ -38,31 +41,136 @@ monthDict = {'January': '01',
 scope = 'https://www.googleapis.com/auth/calendar'
 
 
+def askDateTime():
+    
+    flag = 0
+    while flag == 0:
+        tts("กรุณาระบุวันที่")
+        try:
+            date = stt()
+            if(date == "ไม่เข้าใจที่พูดออกมาค่ะ"):
+                continue
+        except Exception:
+            tts("อินเทอร์เน็ตมีปัญหาค่ะ")
+            continue
+        
+        tts("กรุณาระบุเวลา")
+        try:
+            text = stt()
+            if(text == "ไม่เข้าใจที่พูดออกมาค่ะ"):
+                continue
+        except Exception:
+            tts("อินเทอร์เน็ตมีปัญหาค่ะ")
+            continue
+        
+        text1 = word_tokenize(text,engine="newmm")
+        print(text1)
+        
+        try:    
+            
+            if("." in text or ":" in text):
+                time = text1[0] +":"+text1[2]
+            else:
+                time = text1[0] +":"+ text1[4]
+            
+            
+            inputDate = date+","+time
+        
+            dateTime = dateparser.parse(inputDate)
+            print(dateTime)
+            
+            if dateTime == None:
+                tts("วันที่เเละเวลาผิดค่ะ")
+                continue
+            
+            tz = pytz.timezone(('Asia/Bangkok'))
+            d = datetime.datetime.now(tz=tz)
+            
+            if dateTime.date() < d.date() and dateTime.time() < d.time()  :
+                tts("วันที่เเละเวลาผิดค่ะ")
+                continue
+
+            
+            flag = 1
+            return dateTime
+    
+        except Exception:
+            tts("วันที่เเละเวลาผิดค่ะ")
+            continue
+    
+    
+
+
+
 
 def addEvent():
 
     try:
         event = {
-      'summary': 'Google I/O 2015',
+      'summary': 'G',
       'start': {
         'dateTime': '2018-03-28T09:00:00',
         'timeZone': 'Asia/Bangkok',
       },
       'end': {
-        'dateTime': '2018-03-28T17:00:00',
+        'dateTime': '2018-03-28T09:00:00',
         'timeZone': 'Asia/Bangkok',
       },
     } 
-    
+        warning = 0
+        while warning == 0:
         
-        service.events().insert(calendarId='primary',sendNotifications = True, body = event).execute()
+            flag = 0
+            while flag == 0:
+                tts("แจ้งเตือนเรื่องอะไรค่ะ")
+                try:
+                    summary = stt()
+                    if summary == "ไม่เข้าใจที่พูดออกมาค่ะ":
+                        continue
+                    flag = 1
+                except Exception:
+                    tts("อินเทอร์เน็ตมีปัญหาค่ะ")
+        
+    
+            text = askDateTime()
+            date = str(text)
+            date = date.replace(" ","T")
+            
+            print("Test")
+        
+        
+            event['summary'] = summary
+            event['start']['dateTime'] = date
+            event['end']['dateTime'] = date
+        
+            sayevent = "แจ้งเตือนเรื่อง"+summary+"วันที่"+str(text.day)+"เดือน"+str(text.month)+"ตอน"+str(text.time())
+            tts(sayevent)
+            
+            flag = 0
+            while flag == 0:
+                tts("โอเคไหมค่ะ")
+                try:
+                    inputsay = stt()
+                    if(inputsay == "ไม่เข้าใจที่พูดออกมาค่ะ"):
+                        continue
+                    flag = 1
+                except Exception:
+                    tts("อินเทอร์เน็ตมีปัญหาค่ะ")
+                    continue
+                
+            if any(["โอเค" in inputsay,"คับ" in inputsay,"ค่ะ" in inputsay,"OK" in inputsay]):
+                service.events().insert(calendarId='primary',sendNotifications = True, body = event).execute()
+                break
+            
+            warning = 1
+                
         
         
     except Exception as e:
-        print("Error")
+        tts("มีปัญหาในการต่อปฏิทิน Google ค่ะ")
         
     except KeyError:
-        print("google error")
+        tts("มีปัญหาในการต่อปฏิทิน Google ค่ะ")
                     
 
 					
@@ -127,6 +235,8 @@ if __name__ == '__main__':
 #   authorized httplib2.Http() object that can be used for API calls
     service = build('calendar', 'v3', http=http)
     addEvent()
+    
+    
 
 
 
