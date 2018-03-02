@@ -9,6 +9,7 @@ Created on Mon Feb 19 07:15:29 2018
 from modules.Open_Close import open_close
 from modules.checkemail import checkemail
 from modules.checkcalendar import checkcalendar
+from modules.reminder import addEvent
 from stt import stt
 from tts import tts
 from classify import classify
@@ -43,6 +44,10 @@ def conversation_song(flag,text):
 		
         if str(result[0]) == "checkcalendar" and float(result[1]) > 0.5:
             count = checkcalendar(token,text)
+            
+        if str(result[0]) == "setreminder" and float(result[1]) > 0.5:
+            addEvent()
+            count = 1
         
         
 

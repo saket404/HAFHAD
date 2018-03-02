@@ -1,6 +1,7 @@
 from modules.Open_Close import open_close
 from modules.checkemail import checkemail
 from modules.checkcalendar import checkcalendar
+from modules.reminder import addEvent
 from stt import stt
 from tts import tts
 from modules.song import song
@@ -40,6 +41,10 @@ def conversation(flag,text):
         if str(result[0]) == "playsong" and float(result[1]) > 0.5:
             count = song(token)
             count = 1        
+
+        if str(result[0]) == "setreminder" and float(result[1]) > 0.5:
+            addEvent()
+            count = 1
 
         if str(result[0]) == "email" and float(result[1]) > 0.5:
             checkemail()

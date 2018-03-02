@@ -148,7 +148,7 @@ def addEvent():
             
             flag = 0
             while flag == 0:
-                tts("โอเคไหมค่ะ")
+                tts("โอเคไหม่ค่ะ")
                 try:
                     inputsay = stt()
                     if(inputsay == "ไม่เข้าใจที่พูดออกมาค่ะ"):
