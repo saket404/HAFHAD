@@ -20,6 +20,19 @@ DETECT_DING = os.path.join(TOP_DIR, "resources/ding.wav")
 DETECT_DONG = os.path.join(TOP_DIR, "resources/dong.wav")
 
 
+"""=================================================================
+   Edit of the call back function after a hotword is detected"""
+
+
+def play_function(fname=DETECT_DING):
+	""" Simple callback function to run call other function after detect Hotword """
+	flag = 0
+	text = ""
+	conversation(flag,text)
+	print("Waiting for next HOTWORD")
+
+"""================================================================="""
+
 class RingBuffer(object):
     """Ring buffer to hold audio from PortAudio"""
 
@@ -58,12 +71,7 @@ def play_audio_file(fname=DETECT_DING):
     stream_out.close()
     audio.terminate()
 
-def play_function(fname=DETECT_DING):
-	""" Simple callback function to run call other function after detect Hotword """
-	flag = 0
-	text = ""
-	conversation(flag,text)
-	print("Waiting for next HOTWORD")
+
 	
 	
 	
@@ -166,19 +174,26 @@ class HotwordDetector(object):
 
         logger.debug("detecting...")
         flag = 0
+        count = 0
+        
         while self._running is True:
+            
             if interrupt_check():
                 logger.debug("detect voice break")
                 break
             data = self.ring_buffer.get()
+            
+            if count >= 1500:
+                break
             if len(data) == 0:
+                count += 1
                 time.sleep(sleep_time)
                 if flag == 1:
                     break
                 else:
                     continue
                 
-
+            
             ans = self.detector.RunDetection(data)
             if ans == -1:
                 logger.warning("Error initializing streams or reading audio data")

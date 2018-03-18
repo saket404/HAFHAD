@@ -26,6 +26,8 @@ def wake_word():
 	# Main Loop
     print("\n\nWait for **Anna** word")
     while True:
+        print("=======================================")
+        print("Starting Detector again after timeout.\n")
         detector.start(detected_callback=snowboydecoder.play_function,
 		           interrupt_check=interrupt_callback,
 		           sleep_time=0.03)
