@@ -1,6 +1,7 @@
 import snowboydecoder
 import sys
 import signal
+from modules.checkcalendar import check_event
 
 interrupted = False
 
@@ -26,6 +27,9 @@ def wake_word():
 	# Main Loop
     print("\n\nWait for **Anna** word")
     while True:
+        check_event()
+        
+        
         print("=======================================")
         print("Starting Detector again after timeout.\n")
         detector.start(detected_callback=snowboydecoder.play_function,

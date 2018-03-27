@@ -7,6 +7,7 @@ from pythainlp.tag import pos_tag
 from pythainlp.corpus import stopwords
 from pythainlp.tokenize import word_tokenize
 from dateutil import tz
+from dateutil import parser
 from apiclient.discovery import build
 from oauth2client.file import Storage
 from oauth2client.client import AccessTokenRefreshError
@@ -20,6 +21,7 @@ from tts import tts
 
 client_id = '720601142023-f22luipmdr4l4h0qgp0d2o4lahnuj9cm.apps.googleusercontent.com'
 client_secret = 'ocKT7kdIC8QuD35QDvBItBPc'
+CALENDAR_ID = 'primary'
 
 
 
@@ -289,6 +291,79 @@ def checkcalendar(token,text):
     else:
         tts("โปรดระบุวันที่ด้วยค่ะ")
         return 1
+    
+    
+    
+def check_event():
+
+        
+    tz = pytz.timezone(('Asia/Bangkok'))
+    print(datetime.datetime.now(tz=tz).replace(microsecond=0), 'Getting next event')
+    now = datetime.datetime.now(tz=tz).replace(microsecond=0)
+    then = now + datetime.timedelta(minutes=10)
+    
+    
+    
+ 
+    try:
+    # ask Google for the calendar entries
+        events = service.events().list(calendarId=CALENDAR_ID,timeMin=now.isoformat("T"),timeMax=then.isoformat("T"),singleEvents=True,pageToken = None,orderBy='startTime').execute()
+        count = 0
+        response = ""
+            
+        if(len(events['items']) == 0):
+            print("No Notification to Report\n")
+            return;
+            
+            
+        for event in events['items']:
+
+            try:
+                eventTitle = event['summary']
+                eventTitle = str(eventTitle)
+                eventRawStartTime = event['start']
+                start = event['start']['dateTime']
+                    
+                    
+                    
+                currentTime = datetime.datetime.now(tz=tz).replace(microsecond=0) 
+                eventTime = parser.parse(start)
+                
+                    
+                if currentTime < eventTime:
+                    eventRawStartTime = eventRawStartTime['dateTime'].split("T")
+                    temp = eventRawStartTime[1]
+                    startHour, startMinute, temp = temp.split(":", 2)
+                    startHour = int(startHour)
+                    startMinute = str(startMinute)
+                    startHour = str(startHour)
+                    if(count == 0):
+                        response = eventTitle + " ตอน " + startHour + ":" + startMinute
+                    if(count > 0):
+                        response = response +"กับ"+ eventTitle + " ตอน " + startHour + ":" + startMinute
+                    count = count+1
+                else:
+                    print("Exceed Starting Time SKipping...........\n")
+                    
+
+
+            except (KeyError):
+                count = 500
+                tts("มีปัญหาในการต่อปฏิทิน Google ค่ะ")
+                return
+			
+        if response == "":
+            return
+        
+        if count != 500:
+            tts("มีการแจ้งเตือนเรื่อง"+response + "ค่ะ")
+
+                
+                    
+    except:
+        tts("มีปัญหาในการต่อปฏิทินค่ะ")
+        return
+
 
 
 if __name__ == '__main__':
