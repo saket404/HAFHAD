@@ -4,7 +4,8 @@ import re
 from dateutil import parser
 from tts import tts
 
-
+emailID = "hafhadcpe@gmail.com"
+psswd = "test12345678"
 
 def getSender(email):
     """
@@ -40,18 +41,12 @@ def getMostRecentDate(emails):
 
 def fetchUnreadEmails(since=None, markRead=False, limit=None):
     """
-        Fetches a list of unread email objects from a user's Gmail inbox.
-        Arguments:
-        profile -- contains information related to the user (e.g., Gmail
-                   address)
-        since -- if provided, no emails before this date will be returned
-        markRead -- if True, marks all returned emails as read in target inbox
         Returns:
         A list of unread email objects.
     """
     conn = imaplib.IMAP4_SSL('imap.gmail.com')
     conn.debug = 0
-    conn.login("hafhadcpe@gmail.com", "test12345678")
+    conn.login(emailID,psswd)
     conn.select(readonly=(not markRead))
 
     msgs = []
@@ -82,11 +77,6 @@ def checkemail():
         Responds to user-input, typically speech text, with a summary of
         the user's Gmail inbox, reporting on the number of unread emails
         in the inbox, as well as their senders.
-        Arguments:
-        text -- user-input, typically transcribed speech
-        mic -- used to interact with the user (for both input and output)
-        profile -- contains information related to the user (e.g., Gmail
-                   address)
     """
     try:
         msgs = fetchUnreadEmails(limit=5)

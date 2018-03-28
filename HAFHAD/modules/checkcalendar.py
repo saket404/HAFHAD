@@ -198,51 +198,6 @@ def getEventsTomorrow():
 			return
 
 
-
-
-# Create a flow object. This object holds the client_id, client_secret, and
-# scope. It assists with OAuth 2.0 steps to get user authorization and
-# credentials.
-
-flow = OAuth2WebServerFlow(client_id, client_secret, scope)
-
-
-# Create a Storage object. This object holds the credentials that your
-# application needs to authorize access to the user's data. The name of the
-# credentials file is provided. If the file does not exist, it is
-# created. This object can only hold credentials for a single user, so
-# as-written, this script can only handle a single user.
-storage = Storage('credentials.dat')
-
-# The get() function returns the credentials for the Storage object. If no
-# credentials were found, None is returned.
-credentials = storage.get()
-
-# If no credentials are found or the credentials are invalid due to
-# expiration, new credentials need to be obtained from the authorization
-# server. The oauth2client.tools.run_flow() function attempts to open an
-# authorization server page in your default web browser. The server
-# asks the user to grant your application access to the user's data.
-# If the user grants access, the run_flow() function returns new credentials.
-# The new credentials are also stored in the supplied Storage object,
-# which updates the credentials.dat file.
-if credentials is None or credentials.invalid:
-	credentials = run_flow(flow, storage)
-
-# Create an httplib2.Http object to handle our HTTP requests, and authorize it
-# using the credentials.authorize() function.
-http = httplib2.Http()
-
-http = credentials.authorize(http)
-
-# The apiclient.discovery.build() function returns an instance of an API service
-# object can be used to make API calls. The object is constructed with
-# methods specific to the calendar API. The arguments provided are:
-#   name of the API ('calendar')
-#   version of the API you are using ('v3')
-#   authorized httplib2.Http() object that can be used for API calls
-service = build('calendar', 'v3', http=http)
-
 def checkcalendar(token,text):
     e=token 
     if("วันนี้" in text and e[0] != "วันนี้"):
@@ -367,4 +322,14 @@ def check_event():
 
 
 if __name__ == '__main__':
-  checkcalendar(text)
+    flow = OAuth2WebServerFlow(client_id, client_secret, scope)
+    storage = Storage('credentials.dat')
+    credentials = storage.get()
+    if credentials is None or credentials.invalid:
+        dentials = run_flow(flow, storage)
+
+    http = httplib2.Http()
+
+    http = credentials.authorize(http)
+    service = build('calendar', 'v3', http=http)
+    #checkcalendar(text)
