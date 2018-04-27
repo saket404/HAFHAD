@@ -4,7 +4,7 @@ config = {
   'user': 'test',
   'password': '1234',
   'host': '35.189.145.19',
-  'database': 'User',
+  'database': 'hafhad_db',
   'raise_on_warnings': True,
 }
 def gcloudConnect():

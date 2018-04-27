@@ -1,10 +1,12 @@
 from pythainlp.corpus import stopwords
 from pythainlp.tokenize import word_tokenize
-import speech_recognition as sr
+from modules.sqliteconn import insertData
+from modules.behavior_learning import behaviorLearn
 from Naked.toolshed.shell import execute_js, muterun_js
 from tts import tts
+import datetime
+import speech_recognition as sr
 import sys
-
 
 
 def open_close(text):
@@ -26,8 +28,8 @@ def open_close(text):
             filter_word1.remove(word)
 
     filter_word = [word1 for word1 in filter_word1 if word1 not in stopwords2]
-    print("\n")
-    print(filter_word)
+   # print("\n")
+    #print(filter_word)
 
     if len(filter_word) < 2:
         return 0
@@ -36,9 +38,7 @@ def open_close(text):
         light.append("open")
         light.append(filter_word[1])
         if len(filter_word) > 2:
-            print(1)
             if(filter_word[2] == "และ" and filter_word[-1] != "และ"):
-                print(2)
                 light.append(filter_word[3])
   
 
@@ -46,9 +46,7 @@ def open_close(text):
         light.append("open")
         light.append(filter_word[2])
         if len(filter_word) > 3:
-            print(1)
             if(filter_word[3] == "และ" and filter_word[-1] != "และ"):
-                print(2)
                 light.append(filter_word[4])
 
 
@@ -56,9 +54,7 @@ def open_close(text):
         light.append("close")
         light.append(filter_word[1])
         if len(filter_word) > 2:
-            print(1)
             if(filter_word[2] == "และ" and filter_word[-1] != "และ"):
-                print(2)
                 light.append(filter_word[3])
  
 
@@ -66,17 +62,18 @@ def open_close(text):
         light.append("close")
         light.append(filter_word[2])
         if len(filter_word) > 3:
-            print(1)
+
             if(filter_word[3] == "และ" and filter_word[-1] != "และ"):
-                print(2)
+
                 light.append(filter_word[4])
                 
     else:
         return 0
+    
                 
               
                 
-    print(light)
+    #print(light)
     if(len(light) > 1):
     	final = ",".join(light)
     	print(final)
@@ -90,7 +87,51 @@ def open_close(text):
     else:
         	tts("ไม่เข้าใจคำสั่งของคุณค่ะ")
     	
-    print("\n\n\n")	
+   # print("\n\n\n")	
+    split_string = final.split(",")
+   # print(split_string)
+    t = datetime.datetime.now()
+    t = t.hour
+    add_record = ("INSERT INTO record (plug_name,time,open,close) values(?,?,?,?)")
+    
+    if len(split_string) == 3:
+
+
+        if(split_string[0] == "open"):
+
+
+            record = (split_string[1],t,"1","0")
+            insertData(add_record,record)
+
+            record = (split_string[2],t,"1","0")
+            insertData(add_record,record)
+
+        elif split_string[0] == "close":
+
+
+            record = (split_string[1],t,"0","1")
+            insertData(add_record,record)
+
+            record = (split_string[2],t,"0","1")
+            insertData(add_record,record)
+
+    elif len(split_string) == 2:
+
+
+        if (split_string[0] == "open"):
+
+
+            record = (split_string[1],t,"1","0")
+            insertData(add_record,record)
+
+        elif (split_string[0] == "close"):
+
+
+            record = (split_string[1],t,"0","1")
+            insertData(add_record,record)
+    behaviorLearn()        
+
+    
     return 1
 
 

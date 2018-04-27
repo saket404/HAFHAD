@@ -1,98 +1,82 @@
 # Import database module.
-import firebase_admin
-import mysql.connector
-from firebase_admin import credentials
-
-from firebase_admin import db
-
+import mysql
+import json
+import datetime
+import statistics
 from statistics import stdev
-
 from statistics import mean
-
 from pprint import pprint
-from cloudConnect import gcloudConnect
-from cloudConnect import insertCloud
-
+from modules.cloudConnect import gcloudConnect
+from modules.cloudConnect import insertCloud
 from datetime import date, datetime, timedelta
-
-
 #from tts import tts
 
 
 
 def anomaly_detection():
+    with open('data/user.json') as json_data:
+        d = json.load(json_data)
+        d2 = d['users'][0]['key']
+        print(d['users'][0]['key'])
+        time = str(datetime.now().replace(microsecond=0)- timedelta(days = 1))  
+        print(time)
+        sevenday = str(datetime.now().replace(microsecond=0) - timedelta(days = 7))
+        print(sevenday)  
+        time2 = str(datetime.now().date())
 
-    
+        userKey = str(d2)
 
-    #creditial and initial
+        cnx = gcloudConnect()
 
-    cred = credentials.Certificate("sa_key/SA_key.json")
+        query = ("SELECT * FROM consumption_tb WHERE userKey ='"+userKey+"' AND datetime BETWEEN '"+sevenday+"'AND'"+time+"'")
+        query2 = (("SELECT * FROM consumption_tb WHERE userKey ='"+userKey+"' AND DATE(datetime) ='"+time2+"'"))
+       # print(query)
+       # print(query2)
+        cursor = cnx.cursor()
+        cursor.execute(query)
+        data = cursor.fetchall()
 
-    firebase_admin.initialize_app(cred ,{
+        cursor.execute(query2)
+        data2 = cursor.fetchall()
+        summation = 0
+        summation2 = 0
+        sd = []
 
-        'databaseURL' : 'https://dashboard-2f5e4.firebaseio.com/'
-
-    })
-
-
-
-    # get data from firebase
-
-
-
-    ref = db.reference('/')
-
-    ref1 = ref.get()
-
-    element = ref1.get('Days')
-
-
-
-    # check data
-
-    size = 8
-
-    if len(element) < 8 :
-
-        print("Need more data")
-
-    else:
-
-        last_use = element.pop()
-
-        element = element[-7:]
-
-        list_sd = stdev(element)
-
-        list_mean = mean(element)
-
-        anomaly = list_mean + 2*(list_sd)
-
-        print("Mean + 2 SD = ",anomaly)
+        if len(data) < 100:
+            return 1
+            
+        #print(len(data))
+        for row in data:
+            summation = summation + int(row[3])
+            print("test ="+row[3])
+            sd.append(int(row[3]))
+            #print(row)
+        sd = statistics.stdev(sd)
+        oldmean = summation/(len(data))
+        print("\n\n")
+        print(summation)
+        for rows in data2:
+            #print(rows)
+            summation2 = summation2 + int(rows[3])
+        print(summation2)
 
         add_noti = ("INSERT INTO notification"
 					"(userId,content,type)"
 					"VALUE (%s,%s,%s)")
 
-        if last_use > anomaly:
-			#print('Alert Use more than Usaul')
+        if(summation2 <  summation + (2*sd)):
             noti =('1','Alert Use more than Usaul','warning')
+            insertCloud(add_noti,noti)
 
-        #    tts("Alert Use more than Usaul")
-
-        elif last_use < anomaly:
-			#print('Alert Use better than Usual')
-            noti =('1','Alert Use better than Usual','info')
-
-           # tts("Alert Use better than Usual")
-        insertCloud(add_noti,noti)
-
+         
 
 
 
 if __name__ == '__main__':
 
     anomaly_detection()
+
+
 
     
 

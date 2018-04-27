@@ -2,6 +2,7 @@ import snowboydecoder
 import sys
 import signal
 from modules.checkcalendar import check_event
+from modules.behavior_learning import behavior_alert
 
 interrupted = False
 
@@ -28,6 +29,7 @@ def wake_word():
     print("\n\nWait for **Anna** word")
     while True:
         check_event()
+        behavior_alert()
         
         
         print("=======================================")
