@@ -1,0 +1,62 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title= title
+    link(rel='icon', type='image/png', href='/img/favicon.ico')
+
+    //- Font
+    link(rel='stylesheet', type='text/css', href='https://fonts.googleapis.com/css?family=Montserrat:400,700,200|Material+Icons')
+    link(rel='stylesheet', type='text/css', href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css')
+
+    //- CSS for bootstrap-material-kit
+    //- link(rel='stylesheet', type='text/css', href='/css/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='/css/material-kit.css')
+    
+    //- DataTable theme CSS
+    link(rel='stylesheet', type='text/css', href='https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css')
+
+    link(rel='stylesheet', type='text/css', href='/css/my.css')
+
+  block link
+    - var currentMenu = 'Dashboard'
+
+  if isLogin === true
+    - var menu = { 'Devices' : '/devices', 'Consumption' : '/consumption', 'Notification' : '/notification', 'Account' : '/account', 'Logout' : '/logout' }
+  else
+    - var menu = { 'Devices' : '/devices', 'Consumption' : '/consumption', 'Notification' : '/notification', 'Account' : '/account', 'Login' : '/login' }
+
+  body
+    .navbar.fixed-top
+      ul.nav.nav-pills.card-header-pills
+        each val, key in menu
+          if currentMenu === key
+            li.nav-item
+              a.nav-link.active( href=val )=key
+          else
+            li.nav-item
+              a.nav-link( href=val )=key
+    .main
+      block content
+      p=isLogin
+
+  
+  script(src='/js/core/jquery.min.js')
+  script(src='/js/core/popper.min.js')
+  //- script(src='/js/core/bootstrap.min.js')
+  script(src='/js/bootstrap-material-design.min.js')
+  script(src='/js/material-kit.js?v=2.0.0')
+
+  script(src='/js/plugins/moment.min.js')
+  script(src='/js/plugins/bootstrap-notify.js') 
+  script(src='/js/plugins/bootstrap-datetimepicker.min.js')
+  script(src='/js/plugins/chartjs.min.js') 
+  script(src='/js/plugins/nouislider.min.js')
+  
+  script(src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')
+  script(src='https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js')
+
+  //- Custom JS Here
+  script(src='/js/script.main.js')
+  block other-script
+

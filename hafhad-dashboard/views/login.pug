@@ -1,0 +1,25 @@
+extends layout
+
+block other-script
+  script(src='js/script.login.js')
+
+block link
+  - var currentMenu= title
+
+block content
+  
+  br
+  br
+  .row
+    .col-sm-6.col-md-5.col-lg-4.mx-auto
+      .card
+        .card-body
+          label email
+          input.form-control#email
+          label password
+          input.form-control#password(type='password')
+          br
+          .row
+            .col-7.mx-auto
+              button.btn.btn-primary.btn-block#login_btn Login
+  

@@ -1,0 +1,28 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "alias": "Tiger Nixon",
+      "state": "System Architect",
+      "isValid": "$320,800",
+      "mac": "2011/04/25",
+      "ip": "Edinburgh"
+    },
+    {
+      "id": "2",
+      "alias": "Garrett Winters",
+      "state": "Accountant",
+      "isValid": "$170,750",
+      "mac": "2011/07/25",
+      "ip": "Tokyo"
+    },
+    {
+      "id": "3",
+      "alias": "Ashton Cox",
+      "state": "Junior Technical Author",
+      "isValid": "$86,000",
+      "mac": "2009/01/12",
+      "ip": "San Francisco"
+    }
+  ]
+}

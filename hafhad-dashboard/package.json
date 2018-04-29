@@ -1,0 +1,36 @@
+{
+  "name": "dashboard",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "express-session": "^1.15.6",
+    "firebase": "^4.12.0",
+    "http-errors": "~1.6.2",
+    "jquery": "^3.3.1",
+    "moment": "^2.22.1",
+    "morgan": "~1.9.0",
+    "mysql": "^2.15.0",
+    "nodemon": "^1.17.2",
+    "pi-wifi": "^1.2.0",
+    "pug": "2.0.0-beta11",
+    "tplink-smarthome-api": "^0.22.0"
+  },
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://fufunana@bitbucket.org/fufunana/hafhad-dashboard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/fufunana/hafhad-dashboard#readme",
+  "description": ""
+}

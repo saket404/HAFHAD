@@ -1,0 +1,82 @@
+extends layout
+
+block other-script
+  script(src='js/script.devices.js')
+
+block link
+  - var currentMenu= title
+
+block content
+
+  //- Left sidebar
+  .sidebar.mysidebar.mysidebar-purple( data-color='purple' )
+    ul.nav.flex-column.nav-tabs
+      li.nav-item.mysidenav
+        a.nav-link.active(href='#alldevices_tab', data-toggle='tab')
+          i.material-icons devices
+          span All Devices
+      li.nav-item.mysidenav
+        a.nav-link(href='#addnewdevice_tab', data-toggle='tab')
+          i.material-icons toys
+          span Add New
+      li.nav-item.mysidenav
+        a.nav-link(href='#setting_tab', data-toggle='tab')
+          i.material-icons settings
+          span Setting
+
+  .main-to-right
+    .container-full  
+      .col-12
+        .tab-content(id='nav_tabContent')
+
+          //- Tab 1 - Devices
+          .tab-pane.fade.show.active(id='alldevices_tab',role='tabpanel')
+            .card
+              .card-body
+                table.table.table-sm(id='device_table', style='width:100%')
+                  thead
+                    tr
+                      th 
+                      th alias
+                      th state
+                      th 
+                      th 
+                      th
+
+              //- Tab 2 - Add new device
+          .tab-pane.fade(id='addnewdevice_tab',role='tabpanel')
+            .card
+              .card-body
+                .form-row
+                  .form-group.col-11
+                    label Device Name
+                    input.form-control( id='devicename_input' )
+                    
+                  //- Info button
+                  .col-1
+                    button.btn.btn-primary.btn-fab.btn-fab-mini.btn-round( data-toggle='popover', data-trigger='focus', data-placement='left', data-content='Reset device to get blink LED before setup' )
+                      i.material-icons help
+
+                //- Select device Image
+                label Device Image
+                ul.nav.nav-pills.nav-pills-icons(id='devicetype_ul')
+                  //- Get data from ajax
+                br
+                div.float-right
+                  button.btn.btn-primary(id='addDevice_btn') Add Device
+
+          //- Tab 3 - Setting
+          .tab-pane.fade(id='setting_tab',role='tabpanel')
+            br
+            .card
+              .card-header.card-header-primary SETTING DEVICE
+              .card-body
+                .form-group.row
+                  label.col-3.col-form-label Select Device
+                  .col-9
+                    select.form-control(id='deviceName_select')
+                      - deviceName = { 1:'ไฟห้องนอน', 2:'ห้องครัว', 3:'ทีวี' }
+                        each val, key in deviceName
+                          option(id=key)=val
+              
+              

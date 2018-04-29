@@ -1,0 +1,84 @@
+extends layout
+
+//- block other-script
+//-   script(src='js/script.notification.js')
+
+block link
+  - var currentMenu= title
+
+block content
+  //- Left sidebar
+  .sidebar.mysidebar.mysidebar-purple( data-color='purple' )
+    ul.nav.flex-column.nav-tabs
+      li.nav-item.mysidenav
+        a.nav-link.active(href='#user_tab', data-toggle='tab')
+          i.material-icons account_box
+          span Profile
+      li.nav-item.mysidenav
+        a.nav-link(href='#apisetting_tab', data-toggle='tab')
+          i.material-icons touch_app
+          span Api Access
+
+  .main-to-right
+    .container-full
+      .row
+        .col
+          .tab-content(id='nav_tabContent')
+            //- Tab 1
+            .tab-pane.fade.show.active(id='user_tab',role='tabpanel')
+              br
+              br
+              .card.card-profile
+                .card-avatar
+                  img.img(src="/img/faces/face-2.jpg")
+                .card-body
+                  .form
+                    .form-group
+                      label.bmd-label-floating Name
+                      input.form-control#username_input(type="text", value="John Doe")
+                    .form-group
+                      label.bmd-label-floating Email
+                      input.form-control#useremail_input(type="text", value="john.doe@mail.com")
+                    .form-group
+                      label.bmd-label-floating Address
+                      input.form-control#useraddress_input(type="text", value="")
+                    div.float-right
+                      button.btn.btn-primary Update
+            //- Tab 2
+            .tab-pane.fade(id='apisetting_tab',role='tabpanel')
+              .card
+                //- .card-avatar
+                //-   img.img(src="/img/faces/face-2.jpg")
+                .card-body
+                  .form
+                    .row
+                      label For notification
+                    .row
+                      .col
+                        .form-group
+                          label.bmd-label-floating Email
+                          input.form-control(type="text", value="john.doe@mail.com")
+                      .col
+                        .form-group
+                          label.bmd-label-floating Password
+                          input.form-control(type="password", value="123456")
+                    .float-right
+                      button.btn.btn-primary Update
+              .card
+                .card-body
+                  .form
+                    .row
+                      label For Google Calendar
+                    .row
+                      .col
+                        .form-group
+                          label.bmd-label-floating Client ID
+                          input.form-control(type="text", value="")
+                      .col
+                        .form-group
+                          label.bmd-label-floating Client Secret
+                          input.form-control(type="text", value="")
+
+                    .float-right
+                      button.btn.btn-primary Update
+

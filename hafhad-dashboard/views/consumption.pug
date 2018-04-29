@@ -1,0 +1,49 @@
+extends layout
+
+block other-script
+  script(src='js/script.consumption.js')
+
+block link
+  - var currentMenu= title
+
+block content
+
+  .sidebar.mysidebar.mysidebar-purple( data-color='purple' )
+    ul.nav.flex-column.nav-tabs
+      li.nav-item.mysidenav
+        a.nav-link.active(href='#chart-tab', data-toggle='tab')
+          i.material-icons timeline
+          span Chart Data
+      li.nav-item.mysidenav
+        a.nav-link(href='#options-tab', data-toggle='tab')
+          i.material-icons settings
+          span Options
+
+  .main-to-right
+    .container-full
+      .col-12
+        .card
+          .card-body
+            
+            .tab-content(id='nav-tabContent')
+              //- tab 1
+              .tab-pane.fade.show.active(id='chart-tab',role='tabpanel')
+                .form-row
+                  .col
+                    .form-group
+                      label.label-control Start Date
+                      input.form-control.datetimepicker#startDateRange
+                  .col
+                    .form-group
+                      label.label-control End Date
+                      input.form-control.datetimepicker#endDateRange
+                  .col
+                    button.btn.btn-primary.btn-round.btn-block(id='refreshChart_btn') Go
+                canvas#line_chart
+
+              //- tab 3
+              .tab-pane.fade(id='options-tab',role='tabpanel')
+
+        
+
+

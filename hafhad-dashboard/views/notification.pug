@@ -1,0 +1,28 @@
+extends layout
+
+block other-script
+  script(src='js/script.notification.js')
+
+block link
+  - var currentMenu= title
+
+block content
+  br
+  .card.mx-auto(style='width:95%')
+    .card-header.card-header-primary NOTIFICATION BOARD
+    .card-body
+      table.table.table-sm(id='notificationTable', style='width:100%')
+        thead(style='display: none;')
+          tr
+            th
+            th
+            th
+            th
+            th
+            th
+
+  //- .alert.alert-success
+  //-   .container
+  //-     .alert-icon
+  //-       i.material-icons check
+  //-     b Yuhuuu! You've got your $11.99 album from The Weeknd
