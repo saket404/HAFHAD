@@ -1,0 +1,63 @@
+::-webkit-scrollbar { 
+  display: none; 
+}
+
+/* Small sidebar on leftside */
+.mysidebar{
+  height: 100%;
+  width: 190px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 80px;
+}
+
+.mysidebar.mysidebar-purple{
+  background-color: #9c27b0 !important;
+}
+
+.mysidebar.mysidebar-azure{
+  background-color: #00bcd4 !important;
+}
+
+.mysidenav.nav-item{
+  margin-top: 3px;
+  margin-bottom: 3px; 
+}
+
+/* Container */
+.main {
+  padding-top: 50px;
+  background-color: transparent !important;
+}
+.main-to-right {
+  margin-left: 185px !important;
+  background-color: transparent !important;
+}
+
+.container-full {
+  margin: 0 auto;
+  width: 95%;
+}
+
+/* Prevent selecting text */
+body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.login-parent {
+  display: table;
+  width: 100%;
+}
+.login-box {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
