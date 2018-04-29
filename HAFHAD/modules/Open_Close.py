@@ -73,7 +73,7 @@ def open_close(text):
                 
               
                 
-    #print(light)
+    print(light)
     if(len(light) > 1):
     	final = ",".join(light)
     	print(final)

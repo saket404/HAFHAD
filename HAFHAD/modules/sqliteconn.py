@@ -5,6 +5,8 @@ import sqlite3
 def sqlconn():
     conn = sqlite3.connect('modules/data/user_history.db')
     return conn
+
+
 def createTable():
 
     conn = sqlconn()
@@ -12,9 +14,18 @@ def createTable():
     c.execute('''CREATE TABLE IF NOT EXISTS record
              (No integer primary key AUTOINCREMENT,plug_name integer NOT NULL, time text NOT NULL, open TINYINT(1) NOT NULL, close TINYINT(1) NOT NULL)''')
     c.close()
+
     return True
 
+
+    	# Insert query into sqlite
+		#structure eg . ("INSERT INTO behavior"
+		#				"(plug_name,time,open,close)"
+		#				"VALUES(?,?,?,?)")
+		#data is tuple of data eg .['test1','test2']
+	  
 def insertData(structure,data):
+
 
     conn = sqlite3.connect('modules/data/user_history.db')
     c = conn.cursor()
