@@ -13,7 +13,7 @@ from oauth2client.file import Storage
 from oauth2client.client import AccessTokenRefreshError
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.tools import *
-#from tts import tts
+from tts import tts
 
 
 
@@ -22,6 +22,9 @@ from oauth2client.tools import *
 client_id = '720601142023-f22luipmdr4l4h0qgp0d2o4lahnuj9cm.apps.googleusercontent.com'
 client_secret = 'ocKT7kdIC8QuD35QDvBItBPc'
 CALENDAR_ID = 'primary'
+
+# The scope URL for read/write access to a user's calendar data
+scope = 'https://www.googleapis.com/auth/calendar'
 
 flow = OAuth2WebServerFlow(client_id, client_secret, scope)
 storage = Storage('credentials.dat')
@@ -37,8 +40,7 @@ service = build('calendar', 'v3', http=http)
 
 
 
-# The scope URL for read/write access to a user's calendar data
-scope = 'https://www.googleapis.com/auth/calendar'
+
 
 
 def getEventsDate(date):
@@ -126,7 +128,7 @@ def getEventsToday():
 				eventTitle = event['summary']
 				eventTitle = str(eventTitle)
 				eventRawStartTime = event['start']
-				eventRawStartTime = eventRawStartTime['dateTime'].split("T")
+				eventRawStartTime = eventRawStartTime['dateTime'].split("T")              
 				temp = eventRawStartTime[1]
 				startHour, startMinute, temp = temp.split(":", 2)
 				startHour = int(startHour)
@@ -266,7 +268,7 @@ def check_event():
     tz = pytz.timezone(('Asia/Bangkok'))
     print(datetime.datetime.now(tz=tz).replace(microsecond=0), 'Getting next event')
     now = datetime.datetime.now(tz=tz).replace(microsecond=0)
-    then = now + datetime.timedelta(minutes=5)
+    then = now + datetime.timedelta(minutes=10)
     
     
     
@@ -333,5 +335,5 @@ def check_event():
 
 
 if __name__ == '__main__':
-    print("hello")
+    getEventsToday()
     #checkcalendar(text)
