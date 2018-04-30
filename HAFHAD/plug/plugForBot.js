@@ -1,7 +1,4 @@
 
-const { Client } = require('tplink-smarthome-api');
-const client = new Client();
-var mysql = require('mysql');
 
 var plugHelper = require('../../hafhad-dashboard/function/plugHelper');
 var databaseHelper = require( '../../hafhad-dashboard/function/databaseHelper' )
@@ -14,7 +11,7 @@ var command;
 var device1 = '';
 var device2 = '';
 
-// process.argv = ['open,ปลั๊กห้องนอน,ห้องครัว'];
+process.argv = ['open,ห้องนอน,ห้องครัว'];
 
 /// SPLIT ARGS
 process.argv.forEach(function(index) {
