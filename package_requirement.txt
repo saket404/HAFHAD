@@ -2,6 +2,12 @@ sudo pip3 install youtube-dl
 sudo pip3 install Naked
 sudo pip3 install gtts
 sudo pip3 install pythainlp
+sudo pip3 install httplib2
+sudo pip3 install dateparser
+sudo pip3 install SpeechRecognition
+sudo pip3 install python-dateutil
+sudo pip3 install mysql-connector-python-rf
+sudo pip3 install --upgrade google-api-python-client
 sudo apt-get install swig3.0 python-pyaudio python3-pyaudio sox
 sudo apt-get install libatlas-base-dev
 sudo pip3 install pyaudio
@@ -16,6 +22,7 @@ sudo apt-get upgrade
 sudo apt-get install libav-tools
 sudo apt-get install ubuntu-restricted-extras
 sudo pip3 install python-vlc
+sudo apt-get install vlc
 sudo pip3 install BeautifulSoup4
 sudo apt-get install
 
