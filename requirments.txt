@@ -1,6 +1,8 @@
 sudo pip3 install youtube-dl
 sudo pip3 install Naked
 sudo pip3 install gtts
+sudo apt-get install swig3.0 python-pyaudio python3-pyaudio sox
+sudo pip3 install pyaudio
 sudo apt-get install mpg321
 sudo apt-get install python3-mysql.connector
 sudo pip3 install SpeechRecognition
