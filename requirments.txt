@@ -1,0 +1,14 @@
+sudo pip3 install youtube-dl
+sudo pip3 install Naked
+sudo pip3 install gtts
+sudo apt-get install mpg321
+sudo pip3 install SpeechRecognition
+sudo pip3 install httplib2
+sudo pip3 install --upgrade google-api-python-client
+sudo easy_install --upgrade python-gflags
+sudo add-apt-repository ppa:heyarje/libav-11 && sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install libav-tools
+sudo apt-get install ubuntu-restricted-extras
+sudo pip3 install python-vlc
+sudo pip3 install BeautifulSoup4
