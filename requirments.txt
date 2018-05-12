@@ -1,7 +1,9 @@
 sudo pip3 install youtube-dl
 sudo pip3 install Naked
 sudo pip3 install gtts
+sudo pip3 install pythainlp
 sudo apt-get install swig3.0 python-pyaudio python3-pyaudio sox
+sudo apt-get install libatlas-base-dev
 sudo pip3 install pyaudio
 sudo apt-get install mpg321
 sudo apt-get install python3-mysql.connector
@@ -19,3 +21,6 @@ sudo apt-get install
 
 
 git clone https://github.com/Kitt-AI/snowboy.git
+
+if have problem with swig on make snowboy_so
+reinstall swig and follow installation guide on : https://github.com/swig/swig/wiki/Getting-Started
