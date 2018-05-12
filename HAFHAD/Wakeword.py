@@ -1,8 +1,10 @@
 import snowboydecoder
 import sys
 import signal
+from datetime import datetime
 from modules.checkcalendar import check_event
 from modules.behavior_learning import behavior_alert
+from modules.anomaly_detect import anomaly_detection
 
 interrupted = False
 
@@ -30,6 +32,10 @@ def wake_word():
     while True:
         check_event()
         behavior_alert()
+        time = datetime.now()       
+        m = time.minute
+        if m == 30:
+            anomaly_detection()
         
         
         print("=======================================")
