@@ -16,3 +16,6 @@ sudo apt-get install ubuntu-restricted-extras
 sudo pip3 install python-vlc
 sudo pip3 install BeautifulSoup4
 sudo apt-get install
+
+
+git clone https://github.com/Kitt-AI/snowboy.git
