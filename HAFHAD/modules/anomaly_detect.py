@@ -14,14 +14,14 @@ from datetime import date, datetime, timedelta
 
 
 def anomaly_detection():
-    with open('data/user.json') as json_data:
+    with open('modules/data/user.json') as json_data:
         d = json.load(json_data)
         d2 = d['users'][0]['key']
-        print(d['users'][0]['key'])
+        #print(d['users'][0]['key'])
         time = str(datetime.now().replace(microsecond=0)- timedelta(days = 1))  
-        print(time)
+        #print(time)
         sevenday = str(datetime.now().replace(microsecond=0) - timedelta(days = 7))
-        print(sevenday)  
+       # print(sevenday)  
         time2 = str(datetime.now().date())
 
         userKey = str(d2)
@@ -30,8 +30,7 @@ def anomaly_detection():
 
         query = ("SELECT * FROM consumption_tb WHERE userKey ='"+userKey+"' AND datetime BETWEEN '"+sevenday+"'AND'"+time+"'")
         query2 = (("SELECT * FROM consumption_tb WHERE userKey ='"+userKey+"' AND DATE(datetime) ='"+time2+"'"))
-       # print(query)
-       # print(query2)
+
         cursor = cnx.cursor()
         cursor.execute(query)
         data = cursor.fetchall()
@@ -42,30 +41,34 @@ def anomaly_detection():
         summation2 = 0
         sd = []
 
-        if len(data) < 100:
+        if len(data) < 500:
+            print("Not enough data")
             return 1
             
-        #print(len(data))
+
         for row in data:
             summation = summation + int(row[3])
             print("test ="+row[3])
             sd.append(int(row[3]))
-            #print(row)
+
         sd = statistics.stdev(sd)
         oldmean = summation/(len(data))
         print("\n\n")
         print(summation)
         for rows in data2:
-            #print(rows)
+  
             summation2 = summation2 + int(rows[3])
+
         print(summation2)
 
-        add_noti = ("INSERT INTO notification"
-					"(userId,content,type)"
-					"VALUE (%s,%s,%s)")
+        add_noti = ("INSERT INTO notification_tb"
+					"(userId,userKey,content,type,datetime,isAck)"
+					"VALUE (%s,%s,%s,%s,%s,%s)")
 
-        if(summation2 <  summation + (2*sd)):
-            noti =('1','Alert Use more than Usaul','warning')
+        if(summation2 <  oldmean + (2*sd)):
+            print("Anomaly usage detected")
+            time_now = str(datetime.now())
+            noti =('1',userKey,'Alert Use more than Usaul','warning',time_now,'false')
             insertCloud(add_noti,noti)
 
          

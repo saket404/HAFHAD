@@ -59,7 +59,6 @@ def behavior_alert():
     time = datetime.datetime.now()
     h = time.hour
     m = time.minute
-    print(h,m)
     conn = sqlite3.connect('modules/data/user_behavior.db')
     cur = conn.cursor()
     cur.execute('select * from behavior')
@@ -67,8 +66,8 @@ def behavior_alert():
 
     final = []
     for row in rows:
-        print(row)
-        print("hour:",h," minute: ",int(m)," time to open or close:",row[2])
+        #print(row)
+        print("Current time || hour:",h," minute: ",int(m)," time to open or close:",row[2])
         if (int(row[2]) == int(h) and int(m) == 0) :
             print(row[2],row[3])
             if row[3] == 1:
@@ -90,6 +89,8 @@ def behavior_alert():
             elif any(["เปิด" in text ,"ใช่" in text]) & event == 0:
                 run = ",".join(final)
                 success = muterun_js('plug/plugjs',final)
+            else:
+                pass
     return 0
                 
 

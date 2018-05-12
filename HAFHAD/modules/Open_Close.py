@@ -73,63 +73,77 @@ def open_close(text):
                 
               
                 
-    print(light)
-    if(len(light) > 1):
-    	final = ",".join(light)
-    	print(final)
-    	success = muterun_js('plug/plug.js',final)
-    	if success.exitcode == 0:
-    		print(success.stdout.decode("utf-8"))
-    	else:
-    		sys.stderr.write(success.stderr.decode("utf-8"))
+#    print(light)
+#    if(len(light) > 1):
+#    	final = ",".join(light)
+#    	print(final)
+#
+#    	success = muterun_js('plug/plug.js',final)
+#    	if success.exitcode == 0:
+#    		print(success.stdout.decode("utf-8"))
+#    	else:
+#    		sys.stderr.write(success.stderr.decode("utf-8"))
     		
     	
-    else:
-        	tts("ไม่เข้าใจคำสั่งของคุณค่ะ")
+#    else:
+#        	tts("ไม่เข้าใจคำสั่งของคุณค่ะ")
+
+    if(len(light) > 1):
+        final = ",".join(light)
+        print(final)
+        success = muterun_js('plug/plug.js',final)
+
+        if success.exitcode == 0 :
+            print(success.stdout.decode("utf-8"))
+            
+            split_string = final.split(",")
+            print(split_string)
+            t = datetime.datetime.now()
+            t = t.hour
+            add_record = ("INSERT INTO record (plug_name,time,open,close) values(?,?,?,?)")
+            
+            if len(split_string) == 3:
+
+
+                if(split_string[0] == "open"):
+
+
+                    record = (split_string[1],t,"1","0")
+                    insertData(add_record,record)
+
+                    record = (split_string[2],t,"1","0")
+                    insertData(add_record,record)
+
+                elif split_string[0] == "close":
+
+
+                    record = (split_string[1],t,"0","1")
+                    insertData(add_record,record)
+
+                    record = (split_string[2],t,"0","1")
+                    insertData(add_record,record)
+
+            elif len(split_string) == 2:
+
+
+                if (split_string[0] == "open"):
+
+
+                    record = (split_string[1],t,"1","0")
+                    insertData(add_record,record)
+
+                elif (split_string[0] == "close"):
+
+
+                    record = (split_string[1],t,"0","1")
+                    insertData(add_record,record)
+            behaviorLearn()        
+
+        else:
+            sys.stderr.write(success.stderr.decode("utf-8"))
+
     	
-   # print("\n\n\n")	
-    split_string = final.split(",")
-   # print(split_string)
-    t = datetime.datetime.now()
-    t = t.hour
-    add_record = ("INSERT INTO record (plug_name,time,open,close) values(?,?,?,?)")
-    
-    if len(split_string) == 3:
 
-
-        if(split_string[0] == "open"):
-
-
-            record = (split_string[1],t,"1","0")
-            insertData(add_record,record)
-
-            record = (split_string[2],t,"1","0")
-            insertData(add_record,record)
-
-        elif split_string[0] == "close":
-
-
-            record = (split_string[1],t,"0","1")
-            insertData(add_record,record)
-
-            record = (split_string[2],t,"0","1")
-            insertData(add_record,record)
-
-    elif len(split_string) == 2:
-
-
-        if (split_string[0] == "open"):
-
-
-            record = (split_string[1],t,"1","0")
-            insertData(add_record,record)
-
-        elif (split_string[0] == "close"):
-
-
-            record = (split_string[1],t,"0","1")
-            insertData(add_record,record)
-    behaviorLearn()        
 
     
     return 1
