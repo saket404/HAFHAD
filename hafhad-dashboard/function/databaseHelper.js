@@ -152,33 +152,25 @@ function getIconDeviceMapping(){
 }
 
 /*********************************************************
-*  Set state of plug both physical and online
+*  Set state of plug online
 **********************************************************/
 function setPlugState( userKey, mac, state ){
 
-  // call plug with ip
-  // IMPLEMENT ME
+  let connection = mysql.createConnection( googleDatabaseConfig );
 
-    // Set state of plug physically
-    // IMPLEMENT ME
-
-      // Update firebase
-      // console.log( mac + ip + state );
-      let connection = mysql.createConnection( googleDatabaseConfig );
+  try{
+    return new Promise((resolve, reject) => {
+      connection.query('UPDATE `plug_tb` SET state = '+state+' WHERE mac = "'+mac+'" AND userKey = "'+userKey+'"', function (error, result) {
+        if(error) reject(error);
+        else resolve(true);
+      });
+    });
+  }
+  finally{
+    //  Close connection
+    connection.end();
+  }
   
-      try{
-        return new Promise((resolve, reject) => {
-          connection.query('UPDATE `plug_tb` SET state = '+state+' WHERE mac = "'+mac+'" AND userKey = "'+userKey+'"', function (error, result) {
-            if(error) reject(error);
-            else resolve(true);
-          });
-        });
-      }
-      finally{
-        //  Close connection
-        connection.end();
-      }
-    
 }
 
 /*********************************************************

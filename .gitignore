@@ -1,6 +1,5 @@
 
 *.pyc
-
 *.mp3
-
+desktop.ini
 node_modules/

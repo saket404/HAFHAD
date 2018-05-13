@@ -11,7 +11,7 @@ var command;
 var device1 = '';
 var device2 = '';
 
-process.argv = ['open,ห้องนอน,ห้องครัว'];
+//process.argv = ['open,ห้องนอน,ห้องครัว'];
 
 /// SPLIT ARGS
 process.argv.forEach(function(index) {
