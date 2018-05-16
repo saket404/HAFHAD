@@ -7,7 +7,7 @@ from tts import tts
 import sys
 import datetime
 import sqlite3
-ratio = 0.55
+ratio = 0.65
 
 def behaviorLearn():
 
