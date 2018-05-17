@@ -24,7 +24,7 @@ def detected_callback():
 
 def wake_word():
     signal.signal(signal.SIGINT, signal_handler)
-    detector = snowboydecoder.HotwordDetector("Anna.pmdl", sensitivity=0.6, audio_gain=1)
+    detector = snowboydecoder.HotwordDetector("Anna.pmdl", sensitivity=0.2, audio_gain=1)
     print('Listening... Press Ctrl+C to exit')
 
 	# Main Loop

@@ -67,7 +67,7 @@ def anomaly_detection():
 
         if(summation2 <  oldmean + (2*sd)):
             print("Anomaly usage detected")
-            time_now = str(datetime.now())
+            time_now = datetime.now()
             noti =('1',userKey,'ใช้ไฟเกินมาตราฐานนะคะ','warning',time_now,'false')
             insertCloud(add_noti,noti)
 

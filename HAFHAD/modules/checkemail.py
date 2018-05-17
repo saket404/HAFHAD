@@ -1,7 +1,9 @@
 import imaplib
 import email
 import re
+import datetime
 from dateutil import parser
+from modules.cloudConnect import insertCloud
 from tts import tts
 
 emailID = "hafhadcpe@gmail.com"
@@ -102,6 +104,15 @@ def checkemail():
         else:
             response += "จาก" + unique_senders[0]
 
+        try:
+            add_noti = ("INSERT INTO notification_tb"
+					"(userId,userKey,content,type,datetime,isAck)"
+					"VALUE (%s,%s,%s,%s,%s,%s)")
+            noti =('1','OWERTY1234',response,'info',datetime.datetime.now(),'false')
+            insertCloud(add_noti,noti)
+        except Exception:
+            tts("Database Problem")
+        
         response = response +"ค่ะ"
         tts(response)
         print("\nCheck Email Done\n")

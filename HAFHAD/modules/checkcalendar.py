@@ -13,6 +13,7 @@ from oauth2client.file import Storage
 from oauth2client.client import AccessTokenRefreshError
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.tools import *
+from modules.cloudConnect import insertCloud
 from tts import tts
 
 
@@ -268,8 +269,7 @@ def check_event():
     tz = pytz.timezone(('Asia/Bangkok'))
     print(datetime.datetime.now(tz=tz).replace(microsecond=0), 'Getting next event')
     now = datetime.datetime.now(tz=tz).replace(microsecond=0)
-    then = now + datetime.timedelta(minutes=10)
-    
+    then = now + datetime.timedelta(minutes=5)
     
     
  
@@ -306,9 +306,9 @@ def check_event():
                     startMinute = str(startMinute)
                     startHour = str(startHour)
                     if(count == 0):
-                        response = eventTitle + " ตอน " + startHour + ":" + startMinute
+                        response = eventTitle + " เวลา " + startHour + ":" + startMinute
                     if(count > 0):
-                        response = response +"กับ"+ eventTitle + " ตอน " + startHour + ":" + startMinute
+                        response = response +"กับ"+ eventTitle + " เวลา " + startHour + ":" + startMinute
                     count = count+1
                 else:
                     print("Exceed Starting Time SKipping...........\n")
@@ -324,7 +324,17 @@ def check_event():
             return
         
         if count != 500:
-            tts("มีการแจ้งเตือนเรื่อง"+response + "ค่ะ")
+            phrase = "มีการแจ้งเตือนเรื่อง"+response + "ค่ะ"
+            tts(phrase)
+            
+            try:
+                add_noti = ("INSERT INTO notification_tb (userId,userKey,content,type,datetime,isAck) VALUE (%s,%s,%s,%s,%s,%s)")
+                time_now = datetime.datetime.now(tz=tz).replace(microsecond=0)
+                noti =('1','OWERTY1234',response,'alarm',time_now,'false')
+                insertCloud(add_noti,noti)
+            
+            except Exception as e:
+                tts("มีปัญหาในการต่อ Database ค่ะ")
 
                 
                     
