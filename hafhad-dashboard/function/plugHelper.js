@@ -41,7 +41,7 @@ function getSSID( callback )
         temp = temp.trim();
         if(temp.includes('TP-LINK')) {
           plugSSID = temp;
-          console.log(plugSSID);
+          //console.log(plugSSID);
         }
       }
     });
@@ -57,6 +57,7 @@ function connectToPlugSSID( plugSSID, callback )
   var status = false
 
   piWifi.connectOpen(plugSSID,  function(err) {
+    console.log(err);
     if (!err) {
       console.log('Connect to PLUG...');
       setTimeout(function () {
@@ -181,7 +182,7 @@ async function getConsumptionData(ip, startDate, endDate){
 function settingDevice( roomSSID, roomPass, plugAlias, plugType, callback) {
 
   getSSID( function( ssid ) {
-
+    console.log(ssid);
     if(ssid == ''){
       console.log('Plug not found');
       callback(false);
@@ -189,8 +190,6 @@ function settingDevice( roomSSID, roomPass, plugAlias, plugType, callback) {
     }
     else{
       plugSSID = ssid;
-      console.log(plugSSID);
-
       connectToPlugSSID( plugSSID,  function( status1 ) {
 
         if( status1 ) {
@@ -245,3 +244,4 @@ exports.setPlugState = setPlugState;
 exports.getConsumptionData = getConsumptionData;
 exports.settingDevice = settingDevice;
 exports.getSSID = getSSID;
+exports.connectToPlugSSID = connectToPlugSSID;

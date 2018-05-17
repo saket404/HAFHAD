@@ -1,5 +1,5 @@
-var test = require('./hafhad-dashboard/function/plugHelper');
+var test = require('./hafhad-dashboard/function/newPlugHelper');
 
-test.getSSID( (ssid)=>{
-  console.log(ssid);
+test.connectPlugToWifiAndGetIp( 'ห้องนอน', 1, (res)=>{
+  console.log(res);
 });
