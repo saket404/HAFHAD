@@ -141,105 +141,107 @@ var plugINFO;
 var plugMAC;
 var plugSSID;
 
-module.exports = {
-
-  setPlugState: function(ip, state, callback){
-    client.getDevice( { host: ip } ).then((device)=>{
-      device.setPowerState(state);
-      callback(true);
-    }).catch((e)=>{
-      callback(false);
-    });
-  },
-
-  getConsumptionData: async function(ip, startDate, endDate){
-    startDate = moment(startDate);
-    endDate = moment(endDate);
-    var timeValues = [];
-    var conDatas = [];
-
-    while (endDate > startDate || startDate.format('M') === endDate.format('M')) {
-      timeValues.push({year:startDate.format('YYYY'), month:startDate.format('MM')});
-      startDate.add(1,'month');
-    }
-
-    try{
-      return new Promise((resolve, reject) => {
-        client.getDevice( { host: ip } ).then( async(device)=>{
-          for (let time of timeValues){
-            let year = parseInt(time.year);
-            let month = parseInt(time.month);
-      
-            let conData = await device.emeter.getDayStats(year, month).catch();
-            conDatas.push(conData);
-          }
-          resolve(conDatas);
-        }).catch((e)=>{ reject(false) });
-      });
-    }
-    catch(e){ }
-  },
-
-  settingDevice: function( roomSSID, roomPass, plugAlias, plugType, callback) {
-
-    getSSID( function( ssid ) {
-
-      if(ssid == ''){
-        console.log('Plug not found');
-        callback(false);
-        // process.exit();
-      }
-      else{
-        plugSSID = ssid;
-
-        connectToPlugSSID( plugSSID,  function( status1 ) {
-
-          if( status1 ) {
-            // CONNECT PLUG
-            client.getDevice( { host: selfIP } ).then( ( selfDevice ) => {		
-              plugMAC = selfDevice.mac;
-              selfDevice.setPowerState(true);
-
-              //SET PLUG TO CONNECT WIFI
-              selfDevice.send( { "netif": { "set_stainfo": { "ssid":roomSSID, "password":roomPass, "key_type":3 } } } );	
-
-              connectToWiFi( roomSSID, roomPass, function( status2 ){
-                if( status2 ) {
-
-                  findIPfromMAC( plugMAC, function( plugIP ) {
-                    if( plugIP != '' ) {
-                      // GET PLUG IP FROM MAC.
-                      console.log( 'FOUND IP ' + plugIP );
-                      console.log( 'Connect to Plug...' );
-                      const plug = client.getDevice( { host: plugIP } ).then( ( device )=>{
-                        device.setPowerState( false );
-                        device.setAlias( plugAlias ).then( function() {
-                          console.log( 'Current Plug name: ' + device.alias );
-                          databaseHelper.writeDeviceData(userKey, device.alias, plugMAC, plugIP, device.relayState, plugType)  
-                          callback(true);
-                        });
-                        
-                      });
-                    }
-                  });
-                }
-                else {
-                  console.log( 'can\'t connect to room wifi ' );
-                  callback(false);
-                  // process.exit();
-                }
-              });
-
-            });
-          }
-          else {
-            console.log( 'can\'t connect to plug ' );
-            callback(false);
-            // process.exit();
-          }
-        });
-      }
-    });
-  }
+function setPlugState (ip, state, callback){
+  client.getDevice( { host: ip } ).then((device)=>{
+    device.setPowerState(state);
+    callback(true);
+  }).catch((e)=>{
+    callback(false);
+  });
 }
 
+async function getConsumptionData(ip, startDate, endDate){
+  startDate = moment(startDate);
+  endDate = moment(endDate);
+  var timeValues = [];
+  var conDatas = [];
+
+  while (endDate > startDate || startDate.format('M') === endDate.format('M')) {
+    timeValues.push({year:startDate.format('YYYY'), month:startDate.format('MM')});
+    startDate.add(1,'month');
+  }
+
+  try{
+    return new Promise((resolve, reject) => {
+      client.getDevice( { host: ip } ).then( async(device)=>{
+        for (let time of timeValues){
+          let year = parseInt(time.year);
+          let month = parseInt(time.month);
+    
+          let conData = await device.emeter.getDayStats(year, month).catch();
+          conDatas.push(conData);
+        }
+        resolve(conDatas);
+      }).catch((e)=>{ reject(false) });
+    });
+  }
+  catch(e){ }
+}
+
+function settingDevice( roomSSID, roomPass, plugAlias, plugType, callback) {
+
+  getSSID( function( ssid ) {
+
+    if(ssid == ''){
+      console.log('Plug not found');
+      callback(false);
+      // process.exit();
+    }
+    else{
+      plugSSID = ssid;
+      console.log(plugSSID);
+
+      connectToPlugSSID( plugSSID,  function( status1 ) {
+
+        if( status1 ) {
+          // CONNECT PLUG
+          client.getDevice( { host: selfIP } ).then( ( selfDevice ) => {		
+            plugMAC = selfDevice.mac;
+            selfDevice.setPowerState(true);
+
+            //SET PLUG TO CONNECT WIFI
+            selfDevice.send( { "netif": { "set_stainfo": { "ssid":roomSSID, "password":roomPass, "key_type":3 } } } );	
+
+            connectToWiFi( roomSSID, roomPass, function( status2 ){
+              if( status2 ) {
+
+                findIPfromMAC( plugMAC, function( plugIP ) {
+                  if( plugIP != '' ) {
+                    // GET PLUG IP FROM MAC.
+                    console.log( 'FOUND IP ' + plugIP );
+                    console.log( 'Connect to Plug...' );
+                    const plug = client.getDevice( { host: plugIP } ).then( ( device )=>{
+                      device.setPowerState( false );
+                      device.setAlias( plugAlias ).then( function() {
+                        console.log( 'Current Plug name: ' + device.alias );
+                        databaseHelper.writeDeviceData(userKey, device.alias, plugMAC, plugIP, device.relayState, plugType)  
+                        callback(true);
+                      });
+                      
+                    });
+                  }
+                });
+              }
+              else {
+                console.log( 'can\'t connect to room wifi ' );
+                callback(false);
+                // process.exit();
+              }
+            });
+
+          });
+        }
+        else {
+          console.log( 'can\'t connect to plug ' );
+          callback(false);
+          // process.exit();
+        }
+      });
+    }
+  });
+}
+
+exports.setPlugState = setPlugState;
+exports.getConsumptionData = getConsumptionData;
+exports.settingDevice = settingDevice;
+exports.getSSID = getSSID;
