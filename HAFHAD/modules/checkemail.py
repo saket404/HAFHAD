@@ -111,7 +111,7 @@ def checkemail():
             noti =('1','OWERTY1234',response,'info',datetime.datetime.now(),'false')
             insertCloud(add_noti,noti)
         except Exception:
-            tts("Database Problem ")
+            tts("Database Problem")
         
         response = response +"ค่ะ"
         tts(response)
