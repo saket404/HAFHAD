@@ -34,7 +34,7 @@ def wake_word():
         behavior_alert()
         time = datetime.now()       
         m = time.minute
-        if m == 30:
+        if m == 50:
             anomaly_detection()
         
         
