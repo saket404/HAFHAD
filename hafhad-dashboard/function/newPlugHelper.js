@@ -3,8 +3,8 @@
 // ################################################################# //
 
 var selfIP = '192.168.0.1';
-var roomSSID = 'SeniorRoom_2G';
-var roomPass = 'testuser';
+//var roomSSID = 'SeniorRoom_2G';
+//var roomPass = 'testuser';
 
 var plugAlias = 'ห้องนอน';
 var userKey = 'QWERTY1234';
@@ -95,7 +95,7 @@ function connectToWifi(ssid, password, callback){
   });
 }
 
-function connectPlugToWifiAndGetIp( plugAlias, plugType, callback ){
+function connectPlugToWifi( roomSSID, roomPass, plugAlias, plugType, callback ){
 
   //  Get plug ssid
   getPlugSsid( (plugSsid)=>{
@@ -167,4 +167,4 @@ function connectPlugToWifiAndGetIp( plugAlias, plugType, callback ){
 // ################################################################# //
 exports.getPlugSsid = getPlugSsid;
 exports.connectToWifi = connectToWifi;
-exports.connectPlugToWifiAndGetIp = connectPlugToWifiAndGetIp;
+exports.connectPlugToWifi = connectPlugToWifi;

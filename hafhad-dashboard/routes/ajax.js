@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var plugHelper = require('../function/plugHelper');
+var newPlugHelper = require('../function/newPlugHelper');
 var databaseHelper = require( '../function/databaseHelper' )
 var firebaseHelper = require( '../function/firebaseHelper' );
 var eventHelper = require( '../function/eventHelper' );
@@ -197,7 +198,8 @@ router.get('/setNewPlug', async (req, res, next)=>{
   netData = await eventHelper.getSSIDAndPass();
   if(!netData.length)
     return false;
-  plugHelper.settingDevice( netData[0], netData[1], alias, type, (e)=>{
+
+  newPlugHelper.connectPlugToWifi( netData[0], netData[1], alias, type, (e)=>{
     return e;
   });
 });
