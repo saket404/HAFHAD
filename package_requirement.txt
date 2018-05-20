@@ -24,6 +24,10 @@ sudo apt-get install ubuntu-restricted-extras
 sudo pip3 install python-vlc
 sudo apt-get install vlc
 sudo pip3 install BeautifulSoup4
+sudo apt-get install portaudio19-dev
+sudo apt-get install flac
+sudo pip3 install pyaudio
+sudo pip3 install html5lib
 sudo apt-get install nmap
 sudo apt-get install
 
@@ -32,3 +36,4 @@ git clone https://github.com/Kitt-AI/snowboy.git
 
 if have problem with swig on make snowboy_so
 reinstall swig and follow installation guide on : https://github.com/swig/swig/wiki/Getting-Started
+ps aux | grep -ie python3 | awk '{print $2}' | xargs kill -9
