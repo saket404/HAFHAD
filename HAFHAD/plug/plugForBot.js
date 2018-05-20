@@ -15,7 +15,7 @@ var device2 = '';
 
 /// SPLIT ARGS
 process.argv.forEach(function(index) {
-	// index = 'open,ห้องนอน,ห้องครัว';
+  index = 'close,ห้องนอน,ตู้เย็น';
 	var words = index.split(',');
 
 	if ( words.length > 1 ){
@@ -55,8 +55,12 @@ function searchDeviceThenSetState( userKey, alias, command ){
 				}
 				else{
 					var ip = res[0].ip;
-					plugHelper.setPlugState(ip, command, (e)=>{
+					let s = 	command ? 1:0;
+					let sql = 'UPDATE plug_tb SET state='+ s +' WHERE ip="'+ip+'"';
+					plugHelper.setPlugState(ip, command, async(e)=>{
+						
 						if(e){
+							await databaseHelper.updateData( sql );
 							returnToPython = alias + 'สำเร็จ';
 							resolve(returnToPython);
 						}
@@ -74,9 +78,20 @@ function searchDeviceThenSetState( userKey, alias, command ){
 (async function (){
 	var return1 = '', return2 = '';
 	if( device1 != '' )
-		return1 = await searchDeviceThenSetState( userKey, device1, command );
-	if( device2 != '' )
-		return2 = await searchDeviceThenSetState( userKey, device2, command );
+		return1 = await searchDeviceThenSetState( userKey, device1, command )
+		.then((res)=>{
+			console.log(res);
+		})
+		.catch((e)=>{
+			console.log(e);
+		});
 
-	console.log(return1 + ' ' + return2);
+	if( device2 != '' )
+		return2 = await searchDeviceThenSetState( userKey, device2, command )
+		.then((res)=>{
+			console.log(res);
+		})
+		.catch((e)=>{
+			console.log(e);
+		});
 })();
