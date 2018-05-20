@@ -161,6 +161,35 @@ router.get('/getDeviceTableData', async (req, res, next) => {
 
 });
 
+router.get('/getDeviceOptionData', async (req, res, next) => {
+  var userId = 1
+  var deviceData = []
+
+  // get all plug data
+  try {
+    let devices = await databaseHelper.getPlugFromUserKey(req.session.userKey);
+    let iconMap = await databaseHelper.getIconDeviceMapping();
+    if(devices.length){
+
+      devices.forEach(device => {
+        delete device["plugId"];
+        delete device["userKey"];
+      });
+
+      // Return data
+      var returnData = { 'data':devices, 'icon':iconMap };
+    }
+
+  } catch(error) {
+    console.error(error.message)
+  } finally {
+    res.contentType('json');
+    res.send(returnData);
+    res.end();
+  }
+
+});
+
 
 router.get('/getChartData', async (req, res, next) => {
   var conArray = false;
@@ -186,7 +215,16 @@ router.get('/getChartData', async (req, res, next) => {
   res.send(conArray);
   res.end();
 
-})
+});
+
+router.post('/getDeviceDataOnChange', async (req, res, next) => {
+  var userKey = req.session.userKey;
+  var alias = req.body.alias;
+
+  var sql = 'SELECT alias, mac, ip, type, info FROM `plug_tb` WHERE userKey="'+userKey+'" AND alias="'+alias+'";';
+  let data = await databaseHelper.getData( sql )
+  res.send(data);
+});
 
 /*********************************************************
 * 
@@ -224,9 +262,6 @@ router.post('/changeDeviceState', async (req, res, next) => {
       await databaseHelper.setPlugState( req.session.userKey, mac, state)
     res.send( e );
   })
-
-  
-
 });
 
 /// WARNING :: THIS FUNCTION STILL USE FIREBASE HELPER
@@ -241,5 +276,95 @@ router.post( '/changeAckState', ( req, res, next ) => {
     res.send( status );
   });
 });
+
+/*********************************************************
+* Update button in device page
+**********************************************************/
+
+router.post('/updatePlugData', async ( req, res, next ) => {
+
+  var userKey = req.session.userKey;
+  var alias = req.body.alias;
+  var mac = req.body.mac;
+  var ip = req.body.ip;
+  var info = req.body.info;
+ 
+  //  Create query
+  var sql = 'UPDATE `plug_tb` SET alias="'+alias+'", ip="'+ip+'", info="'+info+'" WHERE userKey="'+userKey+'" AND mac="'+mac+'";';
+  console.log(sql);
+  //  Call update
+  await databaseHelper.updateData( sql );
+});
+
+
+
+/*********************************************************
+* Update button in account page
+**********************************************************/
+
+router.post('/updateInfoData', async ( req, res, next ) => {
+
+  var userKey = req.session.userKey;
+  var name = req.body.name;
+  var email = req.body.email;
+  var password = req.body.password;
+  var address = req.body.address;
+
+  //  Create query
+  var sql = 'UPDATE `user_tb` SET name="'+name+'", email="'+email+'", password="'+password+'", address="'+address+'" WHERE userKey="'+userKey+'";';
+
+  //  Call update
+  await databaseHelper.updateData( sql );
+});
+
+router.post('/updateNotiData', async ( req, res, next ) => {
+
+  var userKey = req.session.userKey;
+  var email = req.body.email;
+  var password = req.body.password;
+
+  //  Create query
+  var sql = 'UPDATE `user_tb` SET email_id="'+email+'", email_password="'+password+'" WHERE userKey="'+userKey+'";';
+
+  //  Call update
+  await databaseHelper.updateData( sql );
+});
+
+router.post('/updateApiData', async ( req, res, next ) => {
+
+  var userKey = req.session.userKey;
+  var clientId = req.body.clientId;
+  var clientSecret = req.body.clientSecret;
+
+  //  Create query
+  var sql = 'UPDATE `user_tb` SET apiKey="'+clientId+'", apiSecret="'+clientSecret+'" WHERE userKey="'+userKey+'";';
+
+  //  Call update
+  await databaseHelper.updateData( sql );
+});
+
+router.post('/updateRatioData', async ( req, res, next ) => {
+
+  var userKey = req.session.userKey;
+  var ratio = req.body.ratio;
+
+  //  Create query
+  var sql = 'UPDATE `user_tb` SET ratio="'+ratio+'" WHERE userKey="'+userKey+'";';
+
+  //  Call update
+  await databaseHelper.updateData( sql );
+});
+
+/*********************************************************
+* Get data for account page
+**********************************************************/
+router.post('/getAccountData', async ( req, res, next ) => {
+
+  var userKey = req.session.userKey;
+  var sql = 'SELECT name, email, password, address, apiKey, apiSecret, email_id, email_password, ratio FROM `user_tb` WHERE userKey="'+userKey+'";';
+  let data = await databaseHelper.getData( sql )
+  res.send(data);
+});
+
 
 module.exports = router;

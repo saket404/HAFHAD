@@ -33,12 +33,27 @@ function setDeviceIconPill(){
   } );
 }
 
+function setDeviceOption(){
+  $.get('./ajax/getDeviceOptionData', {}, (res) =>{
+    // console.log(res);
+    let data = res.data;
+    if( data != [] ){
+      var html = '<option></option>';
+      data.forEach(d => {
+        html += '<option>'+d.alias+'</option>';
+      });
+      $('#deviceName_select').html(html);
+    }
+  } );
+}
+
 ///////////////////////////////////////////
 ////    DOC READY
 ///////////////////////////////////////////
 $(document).ready(function() {
 
   setDeviceIconPill();
+  setDeviceOption();
 
   /**************************************
   *  BUTTON
@@ -92,6 +107,53 @@ $(document).ready(function() {
     callNotify( 'Refresh successfully.', 'primary', 'top', 'right' );
 
   });
+
+  $('#updatePlugInfo_button').click( ()=>{
+    var reqData = { 
+      alias: $('#plugAlias_input').val(), 
+      mac: $('#plugMac_input').val(), 
+      ip: $('#plugIp_input').val(), 
+      info: $('#plugInfo_input').val(), 
+    };
+    console.log(reqData);
+  
+    // Post to update
+    $.post('./ajax/updatePlugData', reqData );
+    callNotify( 'Data is Updated', 'success', 'top', 'right' );
+    setTimeout(() => {
+      window.location = '/devices';
+    }, 2000);
+  });
+
+  /**************************************
+  *  DROPDOWN
+  **************************************/
+$("#deviceName_select").change(function () {
+
+  let reqData = { alias: this.value };
+
+  if( reqData.alias == '' ){
+    $('#plugAlias_input').val('');
+    $('#plugIcon_icon').html('');
+    $('#plugMac_input').val('');
+    $('#plugIp_input').val('');
+    $('#plugInfo_input').val('');
+  }
+  else{
+    $.post('./ajax/getDeviceDataOnChange', reqData, (res) =>{
+      if(res.length > 0){
+        let d = res[0];
+  
+        $('#plugAlias_input').val(d.alias);
+        $('#plugIcon_icon').html(d.icon);
+        $('#plugMac_input').val(d.mac);
+        $('#plugIp_input').val(d.ip);
+        $('#plugInfo_input').val(d.info);
+      }
+      
+    });
+  }
+});
   
   /**************************************
   *  PLUG TABLE

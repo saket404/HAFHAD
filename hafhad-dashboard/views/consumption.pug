@@ -14,10 +14,10 @@ block content
         a.nav-link.active(href='#chart-tab', data-toggle='tab')
           i.material-icons timeline
           span Chart Data
-      li.nav-item.mysidenav
-        a.nav-link(href='#options-tab', data-toggle='tab')
-          i.material-icons settings
-          span Options
+      //- li.nav-item.mysidenav
+      //-   a.nav-link(href='#options-tab', data-toggle='tab')
+      //-     i.material-icons settings
+      //-     span Options
 
   .main-to-right
     .container-full
@@ -31,6 +31,14 @@ block content
                 .form-row
                   .col
                     .form-group
+                      label.label-control Select Device
+                      select.form-control
+                        option All
+                        option ห้องนอน
+                        option ตู้เย็น
+                .form-row
+                  .col
+                    .form-group
                       label.label-control Start Date
                       input.form-control.datetimepicker#startDateRange
                   .col
@@ -41,9 +49,5 @@ block content
                     button.btn.btn-primary.btn-round.btn-block(id='refreshChart_btn') Go
                 canvas#line_chart
 
-              //- tab 3
-              .tab-pane.fade(id='options-tab',role='tabpanel')
-
-        
-
-
+              //- tab 2
+              //- .tab-pane.fade(id='options-tab',role='tabpanel')

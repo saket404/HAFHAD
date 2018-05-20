@@ -1,7 +1,7 @@
 extends layout
 
-//- block other-script
-//-   script(src='js/script.notification.js')
+block other-script
+  script(src='js/script.account.js')
 
 block link
   - var currentMenu= title
@@ -35,15 +35,19 @@ block content
                   .form
                     .form-group
                       label.bmd-label-floating Name
-                      input.form-control#username_input(type="text", value="John Doe")
+                      input.form-control#username_input(type="text", value=" ")
                     .form-group
-                      label.bmd-label-floating Email
-                      input.form-control#useremail_input(type="text", value="john.doe@mail.com")
+                      label.bmd-label-floating Login Email
+                      input.form-control#useremail_input(type="text", value=" ")
+                    .form-group
+                      label.bmd-label-floating Login Password
+                      input.form-control#userpassword_input(type="password", value=" ")
                     .form-group
                       label.bmd-label-floating Address
-                      input.form-control#useraddress_input(type="text", value="")
+                      input.form-control#useraddress_input(type="text", value=" ")
                     div.float-right
-                      button.btn.btn-primary Update
+                      button.btn.btn-primary#updateInfo_btn Update
+                      
             //- Tab 2
             .tab-pane.fade(id='apisetting_tab',role='tabpanel')
               .card
@@ -57,13 +61,13 @@ block content
                       .col
                         .form-group
                           label.bmd-label-floating Email
-                          input.form-control(type="text", value="john.doe@mail.com")
+                          input.form-control#email(type="text", value=" ")
                       .col
                         .form-group
                           label.bmd-label-floating Password
-                          input.form-control(type="password", value="123456")
+                          input.form-control#password(type="password", value=" ")
                     .float-right
-                      button.btn.btn-primary Update
+                      button.btn.btn-primary#updateNoti_btn Update
               .card
                 .card-body
                   .form
@@ -73,12 +77,30 @@ block content
                       .col
                         .form-group
                           label.bmd-label-floating Client ID
-                          input.form-control(type="text", value="")
+                          input.form-control#apiKey(type="text", value=" ")
                       .col
                         .form-group
                           label.bmd-label-floating Client Secret
-                          input.form-control(type="text", value="")
+                          input.form-control#apiSecret(type="text", value=" ")
 
                     .float-right
-                      button.btn.btn-primary Update
+                      button.btn.btn-primary#updateApi_btn Update
+
+              .card
+                .card-body
+                  .form
+                    .row
+                      label For Machine Learning
+                    .row
+                      .col-8
+                        .form-group
+                          label Ratio for usage pattern detection
+                          .slider#ratioSlider
+                      .col-3
+                        p#sliderRangeValue
+                      .col-1
+                        button.btn.btn-primary.btn-fab.btn-fab-mini.btn-round( data-toggle='popover', data-trigger='focus', data-placement='left', data-content='Min - use LESS pattern of usage to detect behavior. Max - user MORE pattern of usage to detect behavior.' )
+                          i.material-icons help
+                    .float-right
+                      button.btn.btn-primary#updateRatio_btn Update
 

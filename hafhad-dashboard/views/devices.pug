@@ -71,12 +71,36 @@ block content
             .card
               .card-header.card-header-primary SETTING DEVICE
               .card-body
+
                 .form-group.row
                   label.col-3.col-form-label Select Device
                   .col-9
                     select.form-control(id='deviceName_select')
-                      - deviceName = { 1:'ไฟห้องนอน', 2:'ห้องครัว', 3:'ทีวี' }
-                        each val, key in deviceName
-                          option(id=key)=val
-              
+
+                .form-row
+                  .col-8
+                    .form-group
+                      label.label-control Alias
+                      input.form-control.datetimepicker(id='plugAlias_input')
+                  .col-4
+                    div(id='plugIcon_icon')
+
+                .form-row
+                  .col
+                    .form-group
+                      label.label-control MAC
+                      input.form-control.datetimepicker(id='plugMac_input', disabled)
+                  .col
+                    .form-group
+                      label.label-control IP
+                      input.form-control.datetimepicker(id='plugIp_input')
+                
+                .form-row
+                  .col
+                    .form-group
+                      label.label-control Info
+                      input.form-control.datetimepicker(id='plugInfo_input')
+                .float-right
+                  button.btn.btn-primary#updatePlugInfo_button Update
+                      
               
