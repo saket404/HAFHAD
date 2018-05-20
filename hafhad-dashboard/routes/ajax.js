@@ -5,7 +5,6 @@ const moment      = require('moment');
 var plugHelper = require('../function/plugHelper');
 var newPlugHelper = require('../function/newPlugHelper');
 var databaseHelper = require( '../function/databaseHelper' )
-var firebaseHelper = require( '../function/firebaseHelper' );
 var eventHelper = require( '../function/eventHelper' );
 
 router.get('/', function(req, res, next) {
@@ -45,7 +44,6 @@ router.get('/getDeviceIcon', async (req, res, next) => {
 /*********************************************************
 * 
 **********************************************************/
-/// WARNING :: THIS FUNCTION STILL USE FIREBASE HELPER
 router.get('/getNotification', async (req, res, next) => {
 
   var userKey = req.session.userKey;
@@ -259,19 +257,6 @@ router.post('/changeDeviceState', async (req, res, next) => {
       await databaseHelper.setPlugState( req.session.userKey, mac, state)
     res.send( e );
   })
-});
-
-/// WARNING :: THIS FUNCTION STILL USE FIREBASE HELPER
-router.post( '/changeAckState', ( req, res, next ) => {
-
-  var userId = 1;
-
-  var id = req.body.id;
-  var isAck = req.body.isAck == 'true' ? true : false;
-
-  firebaseHelper.setAckState( userId, id, isAck, ( status ) => {
-    res.send( status );
-  });
 });
 
 /*********************************************************
