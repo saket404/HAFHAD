@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const moment      = require('moment');
 
 var plugHelper = require('../function/plugHelper');
 var newPlugHelper = require('../function/newPlugHelper');
@@ -33,16 +34,11 @@ router.post('/login', async (req, res, next) => {
 /*********************************************************
 * Return device icons + labels
 **********************************************************/
-/// WARNING :: THIS FUNCTION STILL USE FIREBASE HELPER
-router.get('/getDeviceIcon', (req, res, next) => {
+router.get('/getDeviceIcon', async (req, res, next) => {
 
-  firebaseHelper.getDeviceIcon( ( status, data ) => {
-
-    res.contentType( 'json' );
-    res.send( data );
-    res.end();
-
-  } );
+  var sql = 'SELECT id, icon, label FROM `devicetype_tb`;';
+  let data = await databaseHelper.getData( sql )
+  res.send(data);
 
 } );
 
@@ -50,57 +46,58 @@ router.get('/getDeviceIcon', (req, res, next) => {
 * 
 **********************************************************/
 /// WARNING :: THIS FUNCTION STILL USE FIREBASE HELPER
-router.get('/getNotification', (req, res, next) => {
+router.get('/getNotification', async (req, res, next) => {
 
-  var userId = 1
+  var userKey = req.session.userKey;
   var notiArray = [];
 
-  firebaseHelper.getNotificationData( userId, ( status, data ) => {
-    if( status == true ){
+  var sql = 'SELECT * FROM notification_tb WHERE userKey="'+userKey+'" ORDER BY datetime DESC;';
+  let data = await databaseHelper.getData( sql )
+  var rowId = 0;
 
-      var rowId = 0
+  if(data.length > 0){
+    data.forEach( eachData =>{
+      var dataArray = [];
+      
+      if( eachData.type == 'success' )
+        iconType = 'check';
+      else if( eachData.type == 'alarm' )
+        iconType = 'alarm';
+      else if( eachData.type == 'info' )
+        iconType = 'info_outline';
+      else if( eachData.type == 'danger')
+        iconType = 'clear';
+      else if( eachData.type == 'warning')
+        iconType = 'new_releases';
+      else
+        iconType = '';
+      
+      let icon = '<div class="alert-icon"> <i class="material-icons"> ' + iconType + ' </i> </div>';
+      // var isAck = eachData.isAck == false ? 'btn-primary' : 'disabled';
+      // let ackButton = '<button class="btn '+ isAck +' btn-fab btn-fab-mini btn-round" onclick="changeAckState('+rowId+')" > <i class="material-icons"> visibility </i> </button>'
+      
+      let datetime = moment(eachData.datetime).format('hh:mm DD/MM/YY');
 
-      data.forEach( eachData =>{
-        var dataArray = [];
-        
-        if( eachData.type == 'success' )
-          iconType = 'check'
-        else if( eachData.type == 'alarm' )
-          iconType = 'alarm'
-        else if( eachData.type == 'info' )
-          iconType = 'info_outline'
-        else if( eachData.type == 'danger')
-          iconType = 'clear'
-        else
-          iconType = ''
+      dataArray.push( eachData.id );
+      dataArray.push( icon );
+      dataArray.push( datetime );
+      dataArray.push( eachData.content );
+      // dataArray.push( eachData.isAck );
+      // dataArray.push( ackButton );
+      
+      notiArray.push( dataArray );
+      rowId++;
+    });
+  }
+      
+  // Return data
+  var returnData = { 'data' : notiArray };
 
-        var icon = '<div class="alert-icon"> <i class="material-icons"> ' + iconType + ' </i> </div>';
-        var isAck = eachData.isAck == false ? 'btn-primary' : 'disabled';
-        var ackButton = '<button class="btn '+ isAck +' btn-fab btn-fab-mini btn-round" onclick="changeAckState('+rowId+')" > <i class="material-icons"> visibility </i> </button>'
+  res.contentType( 'json' );
+  res.send( returnData );
+  res.end();
 
-        dataArray.push( eachData.id )
-        dataArray.push( icon )
-        dataArray.push( eachData.datetime )
-        dataArray.push( eachData.content )
-        dataArray.push( eachData.isAck )
-        dataArray.push( ackButton )
-
-        notiArray.push( dataArray )
-        rowId++
-
-      } );
-    }
-
-    // Return data
-    var returnData = { 'data' : notiArray };
-
-    res.contentType( 'json' );
-    res.send( returnData );
-    res.end();
-
-  } );
-
-} );
+});
 
 /*********************************************************
 * Generate all plug data for table
@@ -162,7 +159,7 @@ router.get('/getDeviceTableData', async (req, res, next) => {
 });
 
 router.get('/getDeviceOptionData', async (req, res, next) => {
-  var userId = 1
+
   var deviceData = []
 
   // get all plug data

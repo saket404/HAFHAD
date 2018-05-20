@@ -18,10 +18,11 @@ function changeState_cb( rowId ){
   });
 }
 
-/// WARNING :: THIS FUNCTION STILL USE FIREBASE HELPER
+// Set icon of device type in add device tab
 function setDeviceIconPill(){
   $.get('./ajax/getDeviceIcon', {}, (res) =>{
-    if( res != [] ){
+    console.log(res);
+    if( res.length > 0 ){
       var html = ''
       res.forEach(data => {
         var icon = '<i class="material-icons"> ' + data.icon + ' </i>';
@@ -33,9 +34,10 @@ function setDeviceIconPill(){
   } );
 }
 
-function setDeviceOption(){
+// Set dropdown option in device setting tab
+function setDeviceDropdownOption(){
   $.get('./ajax/getDeviceOptionData', {}, (res) =>{
-    // console.log(res);
+
     let data = res.data;
     if( data != [] ){
       var html = '<option></option>';
@@ -53,7 +55,7 @@ function setDeviceOption(){
 $(document).ready(function() {
 
   setDeviceIconPill();
-  setDeviceOption();
+  setDeviceDropdownOption();
 
   /**************************************
   *  BUTTON

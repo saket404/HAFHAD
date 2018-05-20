@@ -16,7 +16,6 @@ const { Client } 	= require('tplink-smarthome-api');
 const { spawn } 	= require('child_process');
 const { exec } 		= require('child_process');
 const wifi = require('node-wifi');
-const moment      = require('moment');
 
 var databaseHelper = require("./databaseHelper.js");
 

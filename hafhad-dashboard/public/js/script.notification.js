@@ -21,7 +21,6 @@ $(document).ready(function() {
   notificationTable = $('#notificationTable').DataTable( {
     // Get data from ajax at url ...
     ajax: {
-/// WARNING :: THIS FUNCTION STILL USE FIREBASE HELPER
       url: "ajax/getNotification",
       dataSrc: "data"
     },
@@ -29,7 +28,7 @@ $(document).ready(function() {
     // Not show unnesessary element on table
     columnDefs: [
       { targets: [ 0 ], visible: false, searchable: false },
-      { targets: [ 4 ], visible: false, searchable: false },
+      // { targets: [ 4 ], visible: false, searchable: false },
     ],
     pageLength: 6, info: false, lengthChange: false, searching: false,
     // String to display when there is no data
