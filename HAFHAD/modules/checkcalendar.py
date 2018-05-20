@@ -65,7 +65,7 @@ def getEventsDate(date):
 		if(len(events['items']) == 0):
 			tts("คุณไม่มีการแจ้งเตือนอะไรในวันที่ %d ค่ะ"%date)
 			return
-		tts("คุณมี %d การแจ้งเตือนค่ะ" % len(events['items']))
+		response = "คุณมี %d การแจ้งเตือน" % len(events['items'])
 		print("คุณมี %d การแจ้งเตือนค่ะ" % len(events['items']))
 		count = 0
 		for event in events['items']:
@@ -81,7 +81,7 @@ def getEventsDate(date):
 				startMinute = str(startMinute)
 				startHour = str(startHour)
 				if(count == 0):
-					response = eventTitle + " ตอน " + startHour + ":" + startMinute
+					response = response + eventTitle + " ตอน " + startHour + ":" + startMinute
 				if(count > 0):
 					response = response +"กับ"+ eventTitle + " ตอน " + startHour + ":" + startMinute
 				count = count+1
@@ -120,7 +120,7 @@ def getEventsToday():
 		if(len(events['items']) == 0):
 			tts("คุณไม่มีการแจ้งเตือนอะไรในวันนี้")
 			return
-		tts("คุณมี %d การแจ้งเตือนค่ะ" % len(events['items']))
+		response = "คุณมี %d การแจ้งเตือน" % len(events['items'])
 		print("คุณมี %d การแจ้งเตือนค่ะ" % len(events['items']))
 		count = 0
 		for event in events['items']:
@@ -136,7 +136,7 @@ def getEventsToday():
 				startMinute = str(startMinute)
 				startHour = str(startHour)
 				if(count == 0):
-					response = eventTitle + " ตอน " + startHour + ":" + startMinute
+					response = response + eventTitle + " ตอน " + startHour + ":" + startMinute
 				if(count > 0):
 					response = response +"กับ"+ eventTitle + " ตอน " + startHour + ":" + startMinute
 				count = count+1
@@ -179,7 +179,7 @@ def getEventsTomorrow():
 		if(len(events['items']) == 0):
 			tts("คุณไม่มีการแจ้งเตือนอะไรในวันพรุ่งนี้")
 			return
-		tts("คุณมี %d การแจ้งเตือนค่ะ" % len(events['items']))
+		response = "คุณมี %d การแจ้งเตือน" % len(events['items'])
 		print("คุณมี %d การแจ้งเตือนค่ะ" % len(events['items']))
 		count = 0
 		for event in events['items']:
@@ -195,7 +195,7 @@ def getEventsTomorrow():
 				startMinute = str(startMinute)
 				startHour = str(startHour)
 				if(count == 0):
-					response = eventTitle + " ตอน " + startHour + ":" + startMinute
+					response = response + eventTitle + " ตอน " + startHour + ":" + startMinute
 				if(count > 0):
 					response = response +"กับ"+ eventTitle + " ตอน " + startHour + ":" + startMinute
 				count = count +1
