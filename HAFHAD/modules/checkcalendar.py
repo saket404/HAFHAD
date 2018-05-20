@@ -330,7 +330,7 @@ def check_event():
             try:
                 add_noti = ("INSERT INTO notification_tb (userId,userKey,content,type,datetime,isAck) VALUE (%s,%s,%s,%s,%s,%s)")
                 time_now = datetime.datetime.now(tz=tz).replace(microsecond=0)
-                noti =('1','OWERTY1234',response,'alarm',time_now,'false')
+                noti =('1','QWERTY1234',response,'alarm',time_now,'false')
                 insertCloud(add_noti,noti)
             
             except Exception as e:
