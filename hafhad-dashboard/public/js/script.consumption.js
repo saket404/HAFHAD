@@ -2,6 +2,13 @@ var myLineChart;
 var option = {}
 
 $(document).ready(function() {
+  // reqData = { ip: '192.168.1.135'};
+
+  // repeatEvery(()=>{
+    // $.post('/ajax/getRealtimeData', reqData, (realtime)=>{
+    //   console.log('FRONT: ' + realtime);
+    // });
+  // }, 5000);
 
   $('#refreshChart_btn').click( function(){
 

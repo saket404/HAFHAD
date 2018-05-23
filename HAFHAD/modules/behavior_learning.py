@@ -85,10 +85,10 @@ def behavior_alert():
 
             if any(["ปิด" in text, "ใช่" in text]) & event == 1:
                 run = ",".join(final)
-                success = muterun_js('plug/plugjs',run)
+                success = muterun_js('plug/plugForBot.js',run)
             elif any(["เปิด" in text ,"ใช่" in text]) & event == 0:
                 run = ",".join(final)
-                success = muterun_js('plug/plugjs',final)
+                success = muterun_js('plug/plugForBot.js',run)
             else:
                 pass
     return 0

@@ -15,7 +15,7 @@ var device2 = '';
 
 /// SPLIT ARGS
 process.argv.forEach(function(index) {
-  index = 'close,ห้องนอน,ตู้เย็น';
+  //index = 'close,ห้องนอน,ตู้เย็น';
 	var words = index.split(',');
 
 	if ( words.length > 1 ){

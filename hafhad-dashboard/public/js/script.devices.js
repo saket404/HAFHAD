@@ -21,7 +21,7 @@ function changeState_cb( rowId ){
 // Set icon of device type in add device tab
 function setDeviceIconPill(){
   $.get('./ajax/getDeviceIcon', {}, (res) =>{
-    console.log(res);
+    // console.log(res);
     if( res.length > 0 ){
       var html = ''
       res.forEach(data => {
@@ -117,7 +117,7 @@ $(document).ready(function() {
       ip: $('#plugIp_input').val(), 
       info: $('#plugInfo_input').val(), 
     };
-    console.log(reqData);
+    // console.log(reqData);
   
     // Post to update
     $.post('./ajax/updatePlugData', reqData );
