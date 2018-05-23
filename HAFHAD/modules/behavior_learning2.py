@@ -44,6 +44,9 @@ def behaviorLearn():
     rows = cur.fetchone()
     numRow = rows[0]
     print(numRow)
+    if numRow < 20:
+        print("Not enough data")
+        return 1
 
     cur.execute("select count(No),plug_name,time,open,close from record group by plug_name,time,open,close")
     rows = cur.fetchall()  
