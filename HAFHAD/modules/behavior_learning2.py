@@ -87,7 +87,7 @@ def behavior_alert():
     for row in rows:
         final = []
         print("Current time || hour:",h," minute: ",int(m)," time to open or close:",row[2])
-        if (1) :
+        if (int(row[2]) == int(h) and int(m) == 0) :
             print(row[2],row[3])
             if row[3] == 1:
                 final.append("open")
