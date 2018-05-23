@@ -12,6 +12,19 @@ function callNotify( message, notifyType = 'primary', from = 'top', align = 'rig
   });
 }
 
+function repeatEvery(func, interval) {
+
+  var now = new Date()
+  var delay = interval - now % interval;
+
+  function start() {
+    func();
+    setInterval(func, interval);
+  }
+
+  setTimeout(start, delay);
+}
+
 // Scroll on drag
 var clicked = false, clickY;
 $(document).on({

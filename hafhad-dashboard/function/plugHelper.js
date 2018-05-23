@@ -161,7 +161,7 @@ async function getConsumptionData(ip, startDate, endDate){
     timeValues.push({year:startDate.format('YYYY'), month:startDate.format('MM')});
     startDate.add(1,'month');
   }
-
+  console.log(ip);
   try{
     return new Promise((resolve, reject) => {
       client.getDevice( { host: ip } ).then( async(device)=>{
@@ -170,9 +170,25 @@ async function getConsumptionData(ip, startDate, endDate){
           let month = parseInt(time.month);
     
           let conData = await device.emeter.getDayStats(year, month).catch();
+          // let realTime = await device.emeter.getRealtime().catch();
+          
           conDatas.push(conData);
+          // console.log(realTime);
         }
         resolve(conDatas);
+      }).catch((e)=>{ reject(false) });
+    });
+  }
+  catch(e){ }
+}
+
+async function getRealtimeData(ip){
+  
+  try{
+    return new Promise((resolve, reject) => {
+      client.getDevice( { host: ip } ).then( async(device)=>{
+        let realTime = await device.emeter.getRealtime().catch();
+        resolve(realTime);
       }).catch((e)=>{ reject(false) });
     });
   }
@@ -242,6 +258,8 @@ function settingDevice( roomSSID, roomPass, plugAlias, plugType, callback) {
 
 exports.setPlugState = setPlugState;
 exports.getConsumptionData = getConsumptionData;
+exports.getRealtimeData = getRealtimeData
+
 exports.settingDevice = settingDevice;
 exports.getSSID = getSSID;
 exports.connectToPlugSSID = connectToPlugSSID;

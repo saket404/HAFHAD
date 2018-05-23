@@ -15,9 +15,9 @@ block content
           i.material-icons timeline
           span Chart Data
       //- li.nav-item.mysidenav
-      //-   a.nav-link(href='#options-tab', data-toggle='tab')
-      //-     i.material-icons settings
-      //-     span Options
+      //-   a.nav-link(href='#realtime-tab', data-toggle='tab')
+      //-     i.material-icons timeline
+      //-     span Realtime
 
   .main-to-right
     .container-full
@@ -35,7 +35,6 @@ block content
                       select.form-control
                         option All
                         option ห้องนอน
-                        option ตู้เย็น
                 .form-row
                   .col
                     .form-group
@@ -50,4 +49,14 @@ block content
                 canvas#line_chart
 
               //- tab 2
-              //- .tab-pane.fade(id='options-tab',role='tabpanel')
+              //- .tab-pane.fade(id='realtime-tab',role='tabpanel')
+              //-   .form-row
+              //-     .col-10
+              //-       .form-group
+              //-         label.label-control Select Device
+              //-         select.form-control
+              //-           option ห้องนอน
+              //-     .col-2
+              //-       button.btn.btn-primary.btn-round.btn-block(id='refreshRealtime_btn') Go
+
+              //-   canvas#line_chart2

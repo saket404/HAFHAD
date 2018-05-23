@@ -199,6 +199,7 @@ router.get('/getChartData', async (req, res, next) => {
         let conData = await plugHelper.getConsumptionData(device.ip, req.body.startDate, req.body.endDate);
         let con = conData[0].day_list;
         conArray.push({alias:device.alias, con:con});
+        console.log(conData);
         
       }else{
         console.log('Plug '+device.alias+' is not valid');
@@ -208,6 +209,20 @@ router.get('/getChartData', async (req, res, next) => {
   catch(e){
   }
   res.send(conArray);
+  res.end();
+
+});
+
+router.post('/getRealtimeData', async (req, res, next) => {
+  var realtime = false;
+  try {
+    let data = await plugHelper.getRealtimeData(req.body.ip);
+    console.log('Ajax: ' + data);
+    realtime.push(data);
+  }
+  catch(e){
+  }
+  res.send(realtime);
   res.end();
 
 });
