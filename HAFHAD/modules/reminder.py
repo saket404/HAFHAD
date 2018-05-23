@@ -204,11 +204,10 @@ def addEvent():
             event['end']['dateTime'] = date
         
             sayevent = "แจ้งเตือนเรื่อง"+summary+"วันที่"+str(text.day)+"เดือน"+str(text.month)+"ตอน"+str(text.time())
-            tts(sayevent)
             
             flag = 0
             while flag == 0:
-                tts("ถูกต้องหรือไม่ค่ะ")
+                tts(sayevent + "ถูกต้องหรือไม่ค่ะ")
                 try:
                     inputsay = stt()
                     if(inputsay == "ไม่เข้าใจที่พูดออกมาค่ะ"):
