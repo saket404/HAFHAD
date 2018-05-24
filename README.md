@@ -30,7 +30,7 @@
   cd snowboy/swig/Python3 
   make
   ```
-  Then copy the .so file to the main HAFHAD directory. 
+  Then copy the `_snowboydetect.so` file to the main HAFHAD directory. 
     
  #### Run Voice bot
   ```
