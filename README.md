@@ -1,7 +1,8 @@
 # HAFHAD
 smart voice home assistant in thai language
 
-SETUP
+####SETUP
+
 **For dashboard**
   ```
   cd hafhad-dashboard
