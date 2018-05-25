@@ -260,6 +260,7 @@ exports.setPlugState = setPlugState;
 exports.getConsumptionData = getConsumptionData;
 exports.getRealtimeData = getRealtimeData
 
+// NOT USE
 exports.settingDevice = settingDevice;
 exports.getSSID = getSSID;
 exports.connectToPlugSSID = connectToPlugSSID;

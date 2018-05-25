@@ -25,8 +25,8 @@ function checkAuth(req, res, next) {
 
 function getSSIDAndPass(){
   
-  let ssid = 'SeniorRoom_2G';
-  let pass = 'testuser';
+  let ssid = 'Redmi';
+  let pass = 'tttttttt';
   
   return [ssid, pass];
 }
