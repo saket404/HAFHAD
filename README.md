@@ -9,9 +9,9 @@
   ```
 
 **Requirements (Modules)** 
-  ```
-  Install the modules required in package_requirement.txt
-  ```
+  
+  Install the modules required in `package_requirement.txt`
+  
 
 **For dashboard**
   ```
